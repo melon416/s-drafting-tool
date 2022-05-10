@@ -1,0 +1,3 @@
+require('../errorLogger');
+
+require('./render');

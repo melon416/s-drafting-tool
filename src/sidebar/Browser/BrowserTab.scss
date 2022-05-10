@@ -1,0 +1,61 @@
+.browser-tab {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .SelectSearchIcon {
+      font-size: 14px;
+    }
+    
+    .SelectSearchIcon > div {
+      background: url(../../assets/images/search_icon.png) no-repeat 6px 10px;
+      background-size: 16px auto;
+      color: #666666;
+    }
+    
+    .SelectSearchIcon > div, .Edit.SearchIcon {
+      padding-left: 30px;
+      border: 1px solid rgb(96, 94, 92);
+      border-radius: 2px;
+    }
+    
+    .SelectSearchIcon {
+      &.document-version-number {
+        & > div {
+          min-height: 35px !important;
+        }
+      }
+      .ms-BasePicker-text {
+        border: none;
+        padding: 5px 0;
+      }
+    }
+    
+    .ButtonBar {
+      margin-top: 10px;
+    }
+
+    .clause-checkboxes {
+      flex-direction: row;
+      margin-top: 10px;
+      justify-content: space-between;
+    }
+
+    .clause-checkbox.favourite.is-checked .ms-Checkbox-checkbox {
+      background-color: #f49;
+      border-color: #f49;
+    }
+
+    .clause-checkbox.endorsed.is-checked .ms-Checkbox-checkbox {
+      background-color: #3cc;
+      border-color: #3cc;
+    }
+
+    .BrowseTitle {
+      margin: 14px 0;
+      color: black;
+      font-weight: 600;
+      font-size: 14px;
+    }
+  }
+  

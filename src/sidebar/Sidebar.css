@@ -1,0 +1,423 @@
+html, body, #root {
+	height: 100%;
+}
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+body {
+	width: 100%;
+	font-size: 16px;
+	font-family: "Source Sans Pro", sans-serif;
+	color: #777e8e;
+	-webkit-font-smoothing: antialiased;
+	position: relative;
+	font-weight: 400;
+	overflow-x: hidden;
+	background: white;
+}
+
+.SuggestionBox {
+	padding: 6px;
+	background: #fff;
+	box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.16);
+	border: 2px solid #cccccc;
+	position: relative;
+	min-height: 75px;
+	overflow: hidden;
+}
+
+.SuggestionBox .keyword {
+    color: #66cc33;
+	background-color: transparent;
+	font-weight: bold;
+}
+
+.SuggestionBox .keyword-normal {
+    color: black;
+	background-color: transparent;
+	font-weight: normal;
+}
+
+.SuggestionBox .keyword-bold {
+	color: #1895b8;
+	background-color: transparent;
+	font-weight: bold;
+}
+
+.ms-Pivot-linkContent {
+	min-width: 35px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.ms-Pivot-link.is-selected:before {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.SidebarInner {
+	background-color: rgb(255, 255, 255);
+	height: 100%;
+	overflow: hidden;
+	display: flex;
+}
+
+.SidebarTab {
+	overflow: hidden;
+	height: 100%;
+	padding: 6px;
+}
+
+.cst-tabs-main {
+	flex: 1 1 auto;
+}
+
+.cst-tabs-main .ms-Pivot {
+	background: #fff;
+}
+
+.tabThree_buttons_main {
+	margin-bottom: 20px;
+	display: flex;
+}
+
+.tabThree_buttons_main > .ms-Dropdown-container {
+	width: 50%;
+}
+
+.SuggestionTab .cstmLoading_spinner {
+	padding: 0px;
+	background: none;
+	box-shadow: 0px 0px 0px transparent;
+}
+
+.SuggestionTab .cstmLoading_spinner label {
+	padding-bottom: 0px;
+}
+
+.SuggestionTab .cstmLoading_spinner .ms-Spinner-circle {
+	width: 16px;
+	height: 16px;
+	margin-left: 0px;
+	position: absolute;
+	left: 0px;
+	top: 2px;
+}
+
+.SuggestionTab .cstmLoading_spinner .ms-Spinner {
+	position: relative;
+	padding-left: 20px;
+}
+
+.SuggestionTab .cstmLoading_spinner .ms-Spinner:after {
+	content: "Processing...";
+	line-height: 16px;
+	font-size: 12px;
+	color: #b82e2e;
+}
+
+.SuggestionTab .ms-MessageBar-dismissSingleLine {
+	display: none;
+}
+
+.SuggestionBoxIcon {
+	font-size: 16px;
+	cursor: pointer;
+	margin: 2px 10px 5px 2px;
+}
+
+.PreWrapped {
+	white-space: pre-line;
+	word-break: break-word;
+}
+
+.tabThree_infoText {
+	font-size: 14px;
+	color: #000000;
+	position: relative;
+	padding-right: 30px;
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+}
+
+.tabThree_infoPopup {
+	max-width: 270px;
+	padding: 0px 20px 20px;
+}
+
+.tabThree_infoPopup .ms-CalloutExample-title {
+	margin: 10px 0px;
+}
+
+.ms-TextField.FullHeight {
+	display: flex;
+	flex: 1 1 auto;
+	height: 100%;
+}
+
+.ms-TextField.FullHeight .ms-TextField-wrapper {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-flow: column;
+}
+
+.ms-TextField.FullHeight .ms-TextField-wrapper .ms-Label {
+	flex: 0 0;
+}
+
+.ms-TextField.FullHeight .ms-TextField-wrapper .ms-TextField-fieldGroup {
+	flex: 1 1 auto;
+	margin-bottom: 10px;
+}
+
+.SidebarInner .ms-CommandBar {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.SuggestionTitle {
+	padding-left: 50px;
+	padding-right: 30px;
+	color: rgb(50, 49, 48);
+}
+
+.SuggestionResult {
+	flex: 1 1 auto;
+	height: 100%;
+	width: 100%;
+}
+
+.ClauseTitle {
+	color: rgb(50, 49, 48);
+	margin-right: 20%;
+}
+
+.endorsed-checkbox {
+	margin-top: 10px !important;
+}
+
+.add-clause-actions {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	position: relative;
+}
+
+.add-clause-actions.is-shrink {
+	display: flex;
+	flex-direction: column;
+}
+
+.add-clause-actions .add-clause-action {
+	width: 50%;
+}
+
+.add-clause-actions.is-shrink .add-clause-action {
+	width: 100%;
+}
+
+.add-clause-actions .add-clause-action:not(:first-child) {
+	margin-left: 0px;
+	margin-top: 10px;
+}
+
+.SuggestionResultList, .SuggestionFilter, .SuggestionNoResult {
+	margin: 10px;
+}
+
+.SuggestionResultList {
+	user-select: none;
+	-ms-user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
+
+/* thanks fabric */
+.SuggestionResultCommandBar > div > div > div > div > div:nth-child(2) {
+	flex-grow: 1;
+	display: flex;
+	justify-content: center;
+	margin-right: 10px; /* 'better' center */
+}
+
+.ToggleWithCheckbox {
+	display: flex;
+	justify-content: space-between;
+}
+
+.ToggleWithCheckbox.is-shrink {
+	flex-direction: column;
+}
+
+.ToggleWithCheckbox .ms-Checkbox {
+	margin-top: 4px;
+}
+
+.ToggleWithCheckbox.is-shrink .ms-Checkbox{
+	margin-bottom: 8px;
+}
+
+ins {
+	color: blue;
+}
+
+del {
+	color: red;
+}
+
+.SelectedSuggestion .SuggestionContainer {
+	padding: 0 10px;
+}
+
+.SelectedSuggestion .SuggestionTitle {
+	padding: unset;
+}
+
+.SelectedSuggestion .SuggestionBox {
+	padding: 14px;
+}
+
+.SelectedSuggestion .SuggestionBox:first-child {
+	border: 2px solid #cccccc;
+}
+
+.SelectedSuggestion .ClauseTypeName {
+	color: black;
+	font-size: 14px;
+	margin-bottom: 8px;
+}
+
+.SelectedSuggestion .ClauseText {
+	font-size: 14px;
+}
+
+.SelectedSuggestion .ClauseText.bold{
+	font-size: 14px;
+	font-weight: 900;
+	text-align: center;
+}
+
+.SelectedSuggestion .ClauseText.attached{
+	padding-top: 30px;
+}
+
+.SelectedSuggestion .SectionTitle {
+	margin: 14px 0;
+	color: black;
+	font-size: 18px;
+}
+
+.SelectedSuggestion .NoComment {
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+.MetadataTitle {
+	font-weight: 600;
+}
+
+.Comment {
+	display: flex;
+	margin: 20px 0;
+}
+
+.Comment .CommentUserPicture {
+	width: 40px;
+	height: 40px;
+	border-radius: 20px;
+	margin-right: 20px;
+}
+
+.Comment .CommentUsername {
+	margin-bottom: 14px;
+	color: black;
+	font-weight: 600;
+}
+
+.Comment .CommentText {
+	margin-bottom: 8px;
+	color: black;
+}
+
+.writable .DraftEditor-root{
+  border: 1px solid #ababab;
+  border-radius: 3px;
+  padding: 3px;
+}
+
+.writable .DraftEditor-root .public-DraftEditor-content {
+	min-height: 65px;
+	padding: unset;
+}
+
+.writable .public-DraftEditorPlaceholder-root {
+	font-size: 14px;
+}
+
+.writable .public-DraftStyleDefault-block {
+	margin: unset;
+	font-size: 14px;
+	color: rgb(32, 37, 40);
+}
+
+.readOnly .public-DraftEditor-content {
+	padding: unset;
+	overflow-y: unset;
+	color: rgb(32, 37, 40);
+}
+
+
+.Pill {
+  border-radius: 10px;
+  background: #a0aabe;
+  color: #fff;
+  outline: none;
+  border: 0 none;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  padding-left: 7px;
+  padding-right: 7px;
+  float: left;
+  max-width: 205px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.Pill:hover {
+	background: #cc3333;
+	cursor: pointer;
+}
+
+.Pill.inactive:hover{
+  background: #a0aabe;
+  cursor: inherit;
+}
+
+.Pill.Mention {
+	float: none;
+	line-height: 19px;
+}
+
+.Pill.Mention:hover {
+	cursor: pointer;
+}
+
+.ShowMore {
+	display: flex;
+}
+
+.ShowMore button {
+	flex: 1;
+	max-width: 127px;
+}
+
+.ShowMore .ms-Dropdown-container {
+	flex: 1;
+	max-width: 260px;
+}

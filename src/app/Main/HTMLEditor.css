@@ -1,0 +1,45 @@
+.rdw-editor-wrapper {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.rdw-editor-toolbar {
+    flex: 0 0 auto;
+}
+
+.rdw-editor-main {
+    flex: 1 1 auto;
+    height: 100%;
+    overflow: hidden;
+    background: white;
+}
+
+.public-DraftEditor-content {
+    height: 100%;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.rdw-option-wrapper {
+    height: 32px !important;
+}
+
+.HTMLEditorNew {
+    order: -3;
+}
+
+.HTMLEditorOpen {
+    order: -2;
+}
+
+.HTMLEditorSave {
+    order: -1;
+    margin-right: 20px;
+}
+
+#contextMenu {
+    z-index: 2;
+    top: 0;
+}

@@ -1,0 +1,73 @@
+
+.Header {
+  display: flex;
+  padding: 0 24px 0 24px;
+  height: 59px;
+}
+
+.HeaderMenu {
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.logo {
+  width: 162px;
+  margin: 5px 0 15px 10px;
+  flex: 0 0 auto;
+}
+
+.logo img {
+  height: 100%;
+}
+
+.LogoSmall {
+  display: none;
+}
+
+.HeaderMenu ul li {
+  font-size: 14px;
+  display: inline-block;
+  height: 49px;
+  vertical-align: bottom;
+}
+
+.HeaderMenu ul li button {
+  display: block;
+  outline: none;
+  border: none;
+  color: #53585B;
+  padding: 25px 20px 17px 20px;
+  font-weight: 900;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.HeaderMenu ul li button:hover,
+.HeaderMenu ul li button.active {
+  color: white;
+  background-color: #202528;
+}
+
+.HeaderUser {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  flex: 0 0 auto;
+  display: flex;
+}
+
+.HeaderUser .UserPicture {
+  display: inline-block;
+}
+
+.nav_user_name {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 10px;
+  margin-left: 10px;
+  color: #202528;
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 600;
+}
+

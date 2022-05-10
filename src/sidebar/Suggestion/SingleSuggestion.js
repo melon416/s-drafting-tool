@@ -42,10 +42,11 @@ export default class SingleSuggestion extends Component {
 	componentDidUpdate() {
 	  const { filter, suggestionSearchExtraText } = this.props;
 	  const { keyword } = filter;
+    const suggestionKeyWords = suggestionSearchExtraText.split(" ") // spliting suggestionSearchExtraText for multiple words
 
     if( document.querySelector('div.PreWrapped.clause-plain-text') ) {
 	    const instance = new Mark('div.PreWrapped.clause-plain-text');
-      instance.mark([suggestionSearchExtraText], {
+      instance.mark([...suggestionKeyWords], { // spliting suggestionSearchExtraText for multiple words
         accuracy: "exactly",
 	      separateWordSearch: false,
 	      className: 'keyword-bold',

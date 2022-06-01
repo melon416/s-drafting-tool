@@ -56,22 +56,14 @@ export default class TaskpaneApp extends Component {
 	});
 
 	getSelectedText = async () => new Promise((resolve) => {
-		console.log("Here is selected text:");
-	    Office.context.document.getSelectedDataAsync(Office.CoercionType.Html, (asyncResult) => {
+	    Office.context.document.getSelectedDataAsync(Office.CoercionType.Text, (asyncResult) => {
 	      if (asyncResult.status !== Office.AsyncResultStatus.Failed) {
-	        resolve(this.getTextFromHtml(asyncResult.value));
+	        resolve(asyncResult.value);
 	      } else {
 	        resolve('');
 	      }
 	    });
 	  })
-
-	getTextFromHtml = (val) => {
-		let span = document.createElement('span');
-		span.innerHTML = val;
-		let contentDiv = span.getElementsByClassName("WordSection1")
-		return contentDiv[0].textContent.replace(/^\s+|\s+$/g, '') || contentDiv[0].innerText.replace(/^\s+|\s+$/g, '');
-  	}
 
 	arrayBufferToBase64 = (bytes) => {
 	  let binary = '';

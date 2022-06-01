@@ -1,3 +1,15 @@
+  /**
+   *  BrowserResultList.js
+   *  Author:
+   *  Created:
+   */
+  
+  /**
+   * Change-Log:
+   * - 2022-05-25, Wang, Move arrow button a little left
+   */
+
+
 import React from 'react';
 import {
     DetailsList,
@@ -44,8 +56,8 @@ export default class BrowserResultList extends React.Component {
         key: 'column2',
         name: 'Clause Name',                                                                                                                              
         fieldName: 'name',
-        minWidth: 200,
-        maxWidth: 350,
+        minWidth: 120,
+        maxWidth: 900,
         isRowHeader: true,
         isResizable: true,
         data: 'string',
@@ -66,8 +78,8 @@ export default class BrowserResultList extends React.Component {
         key: 'column3',
         name: 'Count',
         fieldName: 'count',
-        minWidth: 70,
-        maxWidth: 90,
+        minWidth: 40,
+        maxWidth: 60,
         isResizable: true,
         data: 'string',
         isSorted: this.state.sortField === "Count",
@@ -87,14 +99,14 @@ export default class BrowserResultList extends React.Component {
         key: 'column1',
         name: '',
         fieldName: 'name',
-        minWidth: 16,
-        maxWidth: 16,
+        minWidth: 20,
+        maxWidth: 20,
         onRender: (item) => (
           <IconButton
             title="Open Clauses"
             iconProps={{ iconName: 'ChromeBackMirrored' }}
             onClick={() => this.handleLoadFile(item)}
-            style={{marginLeft: "-10px"}}
+            style={{marginLeft: "-7px"}}
           />
         ),
       },

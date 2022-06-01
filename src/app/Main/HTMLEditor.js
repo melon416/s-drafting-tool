@@ -83,6 +83,10 @@ export default class HTMLEditor extends PureComponent {
 	  }
 	};
 
+  componentDidCatch() { // when error happens
+      this.forceUpdate();
+  }
+
 	getSelectedText() {
 	  const { editorState } = this.state;
 	  const selected = getFragmentFromSelection(editorState);

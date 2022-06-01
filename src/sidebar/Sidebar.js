@@ -1,3 +1,15 @@
+  /**
+   *  Sidebar.js
+   *  Author:
+   *  Created:
+   */
+  
+  /**
+   * Change-Log:
+   * - 2022-05-27, Wang,  Standalone 
+   */
+
+
 import React, { Component } from 'react';
 import SidebarTabs from './SidebarTabs';
 import './Sidebar.css';
@@ -12,7 +24,7 @@ export default class Sidebar extends Component {
   renderSidebar() {
     const {
       sidebarTab, setSidebarTab, getDocumentText,
-      showLogout, logout, handleLoadFile,
+      showLogout, logout, handleLoadFile, standAlone
     } = this.props;
     if (sidebarTab === SIDEBAR_TAB_SUGGESTION_RESULT) {
       return <SuggestionResultContainer />;
@@ -38,6 +50,7 @@ export default class Sidebar extends Component {
         showLogout={showLogout}
         logout={logout}
         handleLoadFile={handleLoadFile}
+        standAlone={standAlone}
       />
     );
   }

@@ -1,3 +1,15 @@
+/**
+ *  AuthenticatedApp.js
+ *  Author:
+ *  Created:
+ */
+
+  /**
+   * Change-Log:
+   * - 2022-05-17, Wang, Added props for sidepanel
+   * - 2022-05-27, Wang, Added props for Header
+   */
+
 import React, { Component } from 'react';
 import { NotificationContainer } from 'react-notifications';
 import Loading from '../components/Loading';
@@ -28,7 +40,7 @@ export default class AuthenticatedApp extends Component {
   }
 
   render() {
-	  const { isLoggedIn, can_access_dt: canAccessDt } = this.props;
+	  const { isLoggedIn, can_access_dt: canAccessDt, standAlone } = this.props;
 	  const { checkedLoggedIn } = this.state;
 
 	  if (!isLoggedIn) {
@@ -47,11 +59,11 @@ export default class AuthenticatedApp extends Component {
 			<>
 				<LayoutRows>
 					<LayoutRow>
-						<HeaderContainer />
+						<HeaderContainer standAlone = {standAlone}/>
 						<div className="MainToolbar" />
 					</LayoutRow>
 					<LayoutRow flexible>
-						<MainContainer />
+						<MainContainer standAlone = {standAlone}/>
 					</LayoutRow>
 				</LayoutRows>
 				<NotificationContainer />

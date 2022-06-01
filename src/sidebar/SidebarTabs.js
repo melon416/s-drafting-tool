@@ -1,3 +1,15 @@
+  /**
+   *  Sidebar.js
+   *  Author:
+   *  Created:
+   */
+  
+  /**
+   * Change-Log:
+   * - 2022-05-27, Wang,  Standalone 
+   */
+
+  
 import React, { Component } from 'react';
 import Measure from 'react-measure';
 import { PivotItem, Pivot } from 'office-ui-fabric-react/lib/Pivot';
@@ -78,7 +90,7 @@ class SidebarTabs extends Component {
 
 	render() {
 	  const {
-	    sidebarTab, showLogout, logout, setSidebarTab,
+	    sidebarTab, showLogout, logout, setSidebarTab, standAlone
 	  } = this.props;
 	  const { isShrink } = this.state;
 
@@ -135,7 +147,9 @@ class SidebarTabs extends Component {
                           onLinkClick={(item) => setSidebarTab(item.props.itemKey)}
                           headersOnly
                         >
-                          <PivotItem headerText="Load" itemKey={SIDEBAR_TAB_LOAD} />
+                          {standAlone === true ? (<></>) : (
+                            <PivotItem headerText="Load" itemKey={SIDEBAR_TAB_LOAD}/>
+                          )}
                           <PivotItem headerText="Suggest" itemKey={SIDEBAR_TAB_SUGGEST} />
                           <PivotItem headerText="Browse" itemKey={SIDEBAR_TAB_BROWSE} />
                           <PivotItem headerText="Add Clause" itemKey={SIDEBAR_TAB_ADD_CLAUSE} />
@@ -154,7 +168,7 @@ class SidebarTabs extends Component {
                 />
                 )}
               </LayoutRow>
-
+              
               {sidebarTab === SIDEBAR_TAB_LOAD && <LayoutRow flexible>{this.renderLoadTab()}</LayoutRow>}
               {sidebarTab === SIDEBAR_TAB_SUGGEST && <LayoutRow flexible>{this.renderSuggestionTab()}</LayoutRow>}
               {sidebarTab === SIDEBAR_TAB_BROWSE && <LayoutRow flexible>{this.renderBrowseTab()}</LayoutRow>}

@@ -1,3 +1,15 @@
+ /**
+  *  Filter.js
+  *  Author:
+  *  Created:
+  */
+ 
+ /**
+  * Change-Log:
+  * - 2022-05-11, Wang, Fix breaking on Other Tags (some values were undefined and this was the cause)
+  */
+
+
 /* eslint-disable camelcase */
 import React, { Component } from 'react';
 import {
@@ -10,7 +22,7 @@ import _ from 'lodash';
 import { getId } from 'office-ui-fabric-react/lib/Utilities';
 import { Text } from 'office-ui-fabric-react/lib/Text';
 import { TeachingBubble, TextField } from 'office-ui-fabric-react';
-import { formatDate, formatDatePlain, toDate } from '../../shared/date';
+import { formatDatePlain, toDate } from '../../shared/date';
 import Select from '../../components/Select';
 import DocumentIdPicker from '../../components/DocumentIdPicker';
 import filterImg from '../../assets/images/tutorial-filters.gif';
@@ -158,7 +170,7 @@ export default class Filter extends Component {
       newOptions = data;
       newOptions.splice(newOptionPos, 0, newOption)
     }
-    this.setState({ [`${options}`]: newOptions, filter: { ...filter, [`${key}`]: value } })
+    this.setState({ [`${options}`]: newOptions.filter(n => n), filter: { ...filter, [`${key}`]: value } })
   }
 
 	render() {
@@ -328,7 +340,7 @@ export default class Filter extends Component {
                                     }, dateAfter: new Date(date)
                                 })}
                                 firstDayOfWeek={DayOfWeek.Monday}
-                                formatDate={(date) => formatDate(date) || ''}
+                                formatDate={(date) => formatDatePlain(date) || ''}
                                 allowTextInput
                                 placeholder="Pick a date"
                                 maxDate={new Date()}
@@ -347,7 +359,7 @@ export default class Filter extends Component {
                                     }
                                 })}
                                 firstDayOfWeek={DayOfWeek.Monday}
-                                formatDate={formatDate}
+                                formatDate={formatDatePlain}
                                 allowTextInput
                                 placeholder="Pick a date"
                                 minDate={this.state.dateAfter}

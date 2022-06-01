@@ -1,3 +1,14 @@
+  /**
+   *  AddClauseTabContainer.js
+   *  Author:
+   *  Created:
+   */
+  
+  /**
+   * Change-Log:
+   * - 2022-05-31, Wang, Add username
+   */
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import AddClauseTab from './AddClauseTab';
@@ -36,12 +47,16 @@ const mapStateToProps = (state) => ({
   visitedTeachingBubbles: state.app.visitedTeachingBubbles,
   workspaces: state.workspace.activeWorkspaces,
   workspace_id: state.app.appContext.workspace_id,
+  usersname: state.app.appContext.usersname,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setSidebarTab: (sidebarTab) => dispatch.app.setSidebarTab({ sidebarTab }),
   saveClause: (values) => dispatch.clause.saveClause({ values }),
   setAddClauseText: (text) => dispatch.clause.setAddClauseText({ text }),
+  setFavorite: (clauseId, isFavorite) => dispatch.clause.setClauseFavorite({
+    clause_id: clauseId, is_favorite: isFavorite,
+  }),
   showNextTeachingBubble: () => dispatch.app.showNextTeachingBubble(),
   addBubbleCodeToVisited: (bubbleCode) => dispatch.app.addBubbleCodeToVisited(bubbleCode),
   switchWorkspace: (workspaceId) => dispatch.app.switchWorkspace(workspaceId),

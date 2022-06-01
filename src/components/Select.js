@@ -1,3 +1,15 @@
+ /**
+  *  Select.js
+  *  Author:
+  *  Created:
+  */
+ 
+ /**
+  * Change-Log:
+  * - 2022-05-11, Wang, Fix breaking on Other Tags
+  */
+
+
 import React, { Component } from 'react';
 import moize from 'moize';
 import { TagPicker } from 'office-ui-fabric-react/lib/Pickers';
@@ -85,7 +97,7 @@ export default class Select extends Component {
 	  return (
 			<TagPicker
 				componentRef={this.pickerRef}
-				selectedItems={value ? rest.options.filter((opt) => value.includes(opt.key)) : []}
+				selectedItems={value ? rest.options.filter((opt) => value.includes(opt?.key)) : []}
 				pickerSuggestionsProps={{
 				  noResultsFoundText: 'No options',
 				}}

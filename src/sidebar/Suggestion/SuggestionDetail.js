@@ -151,7 +151,7 @@ class SuggestionDetail extends Component {
     return (
       <div>
         {clause_type && "Clause types: " + clause_type.join(", ")}
-        <br />
+        {clause_type && <><br /><br /></>}
         <span className="MetadataTitle">Source Documents:</span> Found in
         {' '}
         {documents.length}
@@ -168,8 +168,7 @@ class SuggestionDetail extends Component {
         {selectedSuggestion[0].matter_number && <><span className="MetadataTitle">Matter number:</span>  {this.getArrayAsTextSentence(selectedSuggestion[0].matter_number, ' ')}</>}
         {selectedSuggestion[0].matter_number && <><br /><br /></>}
         {selectedSuggestion[0].author_name && <><span className="MetadataTitle">Authors:</span>  {this.getArrayAsTextSentence(selectedSuggestion[0].author_name, ' ')}</>}
-        <br />
-        <br />
+        {selectedSuggestion[0].author_name && <><br /><br /></>}
       </div>
     );
   }

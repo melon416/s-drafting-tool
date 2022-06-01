@@ -45,6 +45,7 @@ module.exports = {
     "react/no-array-index-key": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "off",
     "max-len": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "no-unused-expressions": "off"
   }
 };

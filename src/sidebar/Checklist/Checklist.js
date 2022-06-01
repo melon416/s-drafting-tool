@@ -1,3 +1,14 @@
+ /**
+  *  Checklist.js
+  *  Author:
+  *  Created:
+  */
+ 
+ /**
+  * Change-Log:
+  * - 2022-05-09, Wang,  Add onShouldVirtualize and compact to GroupedList to show more than 10 items
+  */
+
 /* eslint-disable react/destructuring-assignment */
 import React, {Component} from 'react';
 import {
@@ -12,7 +23,6 @@ import {
 import _ from 'lodash';
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 import {lockChecklist} from '../../dataCalls/checklists';
-import MentionEditor from './MentionEditor';
 
 const colors = [
     {id: 'pink', label: 'pink', color: '#ff789e'},
@@ -233,77 +243,16 @@ export default class Checklist extends Component {
                                     />
                                     {item.state === 'edit'
                                     && (
-                                        <MentionEditor 
-                                            users={[
-                                                {
-                                                    "id": 1032678,
-                                                    "app_user_id": 1032678,
-                                                    "firstname": "Admin",
-                                                    "lastname": "Admin",
-                                                    "email": "admin@admin.org",
-                                                    "user_type": 500,
-                                                    "active": true,
-                                                    "teams": null,
-                                                    "supervisor_id": null,
-                                                    "profile": null,
-                                                    "can_access_dt": true,
-                                                    "can_access_cb": true,
-                                                    "name": "Admin Admin",
-                                                    "picture": null
-                                                },
-                                                {
-                                                    "id": 2,
-                                                    "app_user_id": 2,
-                                                    "firstname": "Api",
-                                                    "lastname": "User",
-                                                    "email": "apiuser@syntheia.io",
-                                                    "user_type": 200,
-                                                    "active": true,
-                                                    "teams": null,
-                                                    "supervisor_id": null,
-                                                    "profile": null,
-                                                    "can_access_dt": true,
-                                                    "can_access_cb": true,
-                                                    "name": "Api User",
-                                                    "picture": null
-                                                },
-                                                {
-                                                    "id": 1049834,
-                                                    "app_user_id": 1049834,
-                                                    "firstname": "Horace",
-                                                    "lastname": "Wu",
-                                                    "email": "horace@syntheia.io",
-                                                    "user_type": 100,
-                                                    "active": true,
-                                                    "teams": null,
-                                                    "supervisor_id": null,
-                                                    "profile": null,
-                                                    "can_access_dt": true,
-                                                    "can_access_cb": true,
-                                                    "name": "Horace Wu",
-                                                    "picture": null
-                                                },
-                                                {
-                                                    "id": 1,
-                                                    "app_user_id": 1,
-                                                    "firstname": "Syntheia",
-                                                    "lastname": "System",
-                                                    "email": "system@syntheia.io",
-                                                    "user_type": 5000,
-                                                    "active": true,
-                                                    "teams": null,
-                                                    "supervisor_id": null,
-                                                    "profile": null,
-                                                    "can_access_dt": true,
-                                                    "can_access_cb": true,
-                                                    "name": "Syntheia System",
-                                                    "picture": null
-                                                }
-                                            ]}
-                                            readOnly={false}
-                                            autoFocus
-                                            onChange={(commentHtml, rawComment) => this.setState({ commentHtml, rawComment })}
-                                            placeholder="Item Name"
+                                        <TextField
+                                            value={item.label}
+                                            autoFocus={this.props.items.length > 1}
+                                            className="edit-item-input"
+                                            borderless
+                                            placeholder="Item name"
+                                            onChange={onItemChange}
+                                            onBlur={save}
+                                            onKeyDown={onKeydown}
+                                            disabled={readonly}
                                         />
                                     )}
                                 </div>
@@ -508,6 +457,8 @@ export default class Checklist extends Component {
                             groupProps={{
                                 onRenderHeader: onRenderGroupHeader,
                             }}
+                            onShouldVirtualize={() => false}  // to show more than 10 items
+                            compact  // to show more than 10 items
                         />
                     </DragDropContext>
                     {!this.props.readonly && (

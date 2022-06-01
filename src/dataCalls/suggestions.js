@@ -5,7 +5,15 @@ export async function getNextClauseSibling(values) {
 }
 
 export async function getSuggestions(values) {
-  return postData('getSuggestions', values);
+  let results = await postData('getSuggestions', values);
+  if (results.suggestions && results.suggestions.length) {
+    return results;
+  }
+
+  return {
+    ...await postData('getSuggestions', {...values, disable_NLP: true}),
+    showWraningForDisableNLP: true
+  };
 }
 
 export async function getTrigramCounts(values) {

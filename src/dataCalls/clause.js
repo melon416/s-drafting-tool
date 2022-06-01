@@ -12,3 +12,7 @@ export async function getNextClauseSibling(values) {
   return postData('getNextClause', values);
 }
 
+export async function setClauseFavorite(values) {
+  return postData('setClauseFavorite', values);
+}
+

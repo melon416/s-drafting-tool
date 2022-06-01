@@ -11,6 +11,7 @@ import Select from '../../components/Select';
 import { LayoutRow, LayoutRows } from '../../shared/components/Layout';
 import SingleClause from './SingleClause';
 import Loading from '../../components/Loading';
+import { suggestion } from '../../models';
 
 export default class BrowserResult extends Component {
   teachingBubbleTarget = React.createRef();
@@ -99,6 +100,7 @@ export default class BrowserResult extends Component {
     return (
       <LayoutRows className="SuggestionResultList" flexible style={{ overflow: 'visible' }}>
         {suggestions
+          .filter((value, index) => suggestions.findIndex(t => (t.content_id === undefined && t.clause_text === undefined) || (t.content_id !== undefined && t.content_id === value.content_id) || (t.clause_text !== undefined && t.clause_text === value.clause_text)) === index)
           .filter((sug) => !badSuggestions.includes(sug.id))
           .sort((a, b) => {
             if (a.clause_date_to > b.clause_date_to) return this.state.sortOption === 0 ? 1 : -1;

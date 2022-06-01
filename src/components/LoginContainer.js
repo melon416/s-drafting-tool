@@ -10,11 +10,15 @@ class LoginContainer extends Component {
   }
 }
 
-const mapStateToProps = () => ({
+const mapStateToProps = (state) => ({
+  isAzureLoginEnabled: state.app.isAzureLoginEnabled
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  login: ({ username, password, token }) => dispatch.app.login({ username, password, token }),
+  login: dispatch.app.login,
+  getAzureLoginUrl: dispatch.app.getAzureLoginUrl,
+  loginWithAzure:dispatch.app.loginWithAzure,
+  checkAzureLoginEnabled: dispatch.app.checkAzureLoginEnabled
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);

@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import {
-  getAppContext, login, logout, setCurrentStep,
+  getAppContext, login, logout, setCurrentStep,loginWithAzure,getAzureLoginUrl, isAzureLoginEnabled
 } from '../dataCalls/app';
 import { SIDEBAR_TAB_SUGGEST } from '../consts';
 import { logError } from '../errorLogger';
@@ -17,6 +17,7 @@ export const app = {
     teachingBubbleCodes: ['intro', 'suggest', 'pick-and-choose', 'filter', 'add-clause', 'outro'],
     currentBubbleCode: '',
     visitedTeachingBubbles: [],
+    isAzureLoginEnabled:true
   },
 
   reducers: {
@@ -104,6 +105,12 @@ export const app = {
         rightPanelVisible,
       };
     },
+    setAzureEnabledStatus ( state, enabled){
+      return{
+        ...state,
+        isAzureLoginEnabled:enabled
+      }
+    }
   },
 
   effects: (dispatch) => ({
@@ -120,7 +127,25 @@ export const app = {
         this.addError({ error });
       }
     },
-
+    async getAzureLoginUrl(){
+      const {url}= await getAzureLoginUrl(`${window.location.protocol}//${window.location.host}`)
+      window.location = url
+    },
+    async loginWithAzure(code){
+      try{
+      const { appContext} = await loginWithAzure(code,`${window.location.protocol}//${window.location.host}`)
+      this.setAppContext({ appContext });
+      dispatch.workspaces.setWorkspaces({ workspaces: appContext.workspaces });
+      dispatch.bookmarks.fetchUserBookmarks();
+      }
+      catch{
+      window.location.search = '/'
+      }
+    },
+    async checkAzureLoginEnabled(){
+     const isAzureEnabled = await isAzureLoginEnabled()
+     dispatch.app.setAzureEnabledStatus(isAzureEnabled.enabled)
+      },
     async logout() {
       this.setAppContext({ appContext: { isLoggedIn: false } });
 

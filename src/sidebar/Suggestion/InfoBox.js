@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { ACTIVITY_DT_SUGGESTION_LINK_FOLLOWED, WORKSPACE_ID_DEFAULT } from '../../consts';
 import { getClauseBankURLPrefix } from '../../utils';
 import { isArrayEmpty } from '../../shared/clientUtils';
-import { formatDate } from '../../shared/date';
+import { formatDatePlain } from '../../shared/date';
 
 function getArrayAsTextSentence(ar, prefix) {
   if (isArrayEmpty(ar)) {
@@ -43,7 +43,7 @@ export default class InfoBox extends Component {
           {documents[0].doc_title}
           , dated
           {' '}
-          {formatDate(documents[0].doc_date)}
+          {formatDatePlain(documents[0].doc_date)}
           {getArrayAsTextSentence(documents[0].client_id, ' for ')}
           .
           <br />

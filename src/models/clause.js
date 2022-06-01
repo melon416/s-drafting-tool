@@ -1,4 +1,4 @@
-import { saveClause, searchClauses } from '../dataCalls/clause';
+import { saveClause, searchClauses, setClauseFavorite } from '../dataCalls/clause';
 import { getNextClauseSibling, getTrigramCounts, saveComment } from '../dataCalls/suggestions';
 import { addTransportAppContext } from '../dataCalls/transport';
 import { SIDEBAR_TAB_BROWSER_RESULT} from '../consts';
@@ -209,6 +209,17 @@ export const clause = {
         await dispatch.app.addError({ error });
         return null;
       }
+    },
+
+    async setFavorite({clause_id, is_favorite}, rootState) {
+      dispatch.clause.update({clause_id, clause: {is_favorite}});
+
+      const {clause, activities} = await setClauseFavorite(addTransportAppContext(rootState, {
+          clause_id,
+          is_favorite
+      }));
+
+      dispatch.clause.update({clause_id, clause});
     },
 
     async searchClauses({ filter }, rootState) {

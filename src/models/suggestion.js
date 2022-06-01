@@ -20,7 +20,7 @@ export const suggestion = {
     selectedSuggestion: {},
     comments: [],
     isCommentLoading: false,
-
+    page: 1,
     unusualPhrases: {
       highlight: false,
       clauseTypeID: null,
@@ -33,11 +33,12 @@ export const suggestion = {
 
   reducers: {
 
-    setSuggestions(state, { suggestions, moreAvailable }) {
+    setSuggestions(state, { suggestions, moreAvailable, showWraningForDisableNLP = false}) {
       return {
         ...state,
         suggestions,
         moreAvailable: (moreAvailable === undefined) ? state.moreAvailable : moreAvailable,
+        showWraningForDisableNLP
       };
     },
 
@@ -141,6 +142,13 @@ export const suggestion = {
       };
     },
 
+    setPage(state, { page }) {
+      return {
+        ...state,
+        page,
+      };
+    },
+
     clear(state) {
       return {
         ...state,
@@ -160,6 +168,7 @@ export const suggestion = {
           showAdvanced: false,
         },
         selectedSuggestion: {},
+        page: 1,
       };
     },
 
@@ -204,11 +213,14 @@ export const suggestion = {
         this.setIsLoading({ isLoading: true });
         let suggestions;
         try {
+          this.setPage({ page: 1});
           const result = (await getSuggestions(addTransportAppContext(rootState, {
             clause_text: rootState.suggestion.searchText,
             clause_text_extra: rootState.suggestion.searchExtraText,
             document_text,
             workspace_id: rootState.app.appContext.workspace_id,
+            page: 1,
+            limit: 5
           })));
           suggestions = result.suggestions;
 
@@ -218,6 +230,7 @@ export const suggestion = {
 
           this.setSuggestions({ suggestions, moreAvailable: suggestions.length > 0 });
         } finally {
+          this.setPage({ page: rootState.suggestion.page + 1});
           this.setIsLoading({ isLoading: false });
         }
 
@@ -239,21 +252,25 @@ export const suggestion = {
 
         this.setIsLoading({ isLoading: true });
         try {
-          const newSuggestions = (await getSuggestions(addTransportAppContext(rootState, {
+          const { suggestions: newSuggestions, showWraningForDisableNLP }  = (await getSuggestions(addTransportAppContext(rootState, {
             ...filter,
             clause_text: searchText,
             clause_text_extra: searchExtraText,
             exclude_clause_id,
             prefer_document_type_id,
             good_suggestions: suggestions.filter((sug) => goodSuggestions.includes(sug.id)).map((sug) => sug.clause_text),
-          }))).suggestions;
+            workspace_id: rootState.app.appContext.workspace_id,
+            page: rootState.suggestion.page,
+            limit: 5,
+          })));
 
           const allSuggs = suggestions.concat(newSuggestions);
 
-          this.setSuggestions({ suggestions: allSuggs, moreAvailable: newSuggestions.length > 0 });
+          this.setSuggestions({ suggestions: allSuggs, moreAvailable: newSuggestions.length > 0, showWraningForDisableNLP});
 
           this.loadTrigramCounts({ suggestions: newSuggestions }); // async
         } finally {
+          this.setPage({page: rootState.suggestion.page + 1})
           this.setIsLoading({ isLoading: false });
         }
       } catch (error) {
@@ -272,16 +289,17 @@ export const suggestion = {
         this.setIsLoading({ isLoading: true });
         this.setSuggestions({ suggestions: [] });
         try {
-          const { suggestions: newSuggestions } = await getSuggestions(addTransportAppContext(rootState, {
+          const { suggestions: newSuggestions, showWraningForDisableNLP } = await getSuggestions(addTransportAppContext(rootState, {
             ...filter,
             clause_text: searchText,
             clause_text_extra: searchExtraText,
             exclude_clause_id,
             prefer_document_type_id,
             good_suggestions: suggestions.filter((sug) => goodSuggestions.includes(sug.id)).map((sug) => sug.clause_text),
+            workspace_id: rootState.app.appContext.workspace_id,
           }));
 
-          this.setSuggestions({ suggestions: newSuggestions, moreAvailable: newSuggestions.length > 0 }); // replace all suggestions, but keep good/bad ids
+          this.setSuggestions({ suggestions: newSuggestions, moreAvailable: newSuggestions.length > 0, showWraningForDisableNLP}); // replace all suggestions, but keep good/bad ids
 
           this.loadTrigramCounts({ suggestions: newSuggestions }); // async
         } finally {

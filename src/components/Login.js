@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Checkbox, Label } from 'office-ui-fabric-react';
 import {
-  PrimaryButton,
+  PrimaryButton,DefaultButton
 } from 'office-ui-fabric-react/lib/Button';
 import Logo from '../app/Logo';
 import './Login.css';
@@ -17,6 +17,11 @@ class Login extends Component {
 
 	componentDidMount() {
 	  this.mounted = true;
+    this.props.checkAzureLoginEnabled()
+    const code = new URLSearchParams(window.location.search).get("code")
+    if(code){
+      this.props.loginWithAzure(code)
+      }
 	}
 
 	componentWillUnmount() {
@@ -50,7 +55,8 @@ class Login extends Component {
 	  const {
 	    submitting, username, password,
 	  } = this.state;
-
+    const { getAzureLoginUrl } = this.props;
+    const addIcon = { iconName: 'WindowsLogo' };
 	  return (
       <div className="LoginWrapper">
         <div className="Login-card">
@@ -78,6 +84,7 @@ class Login extends Component {
 
             </EditFieldList>
             <div className="LoginButton">
+            <div style={{flex:.5}}></div>
               <PrimaryButton
                 id="syntheiaLoginBtn"
                 onClick={this.login}
@@ -85,6 +92,13 @@ class Login extends Component {
               >
                 Login
               </PrimaryButton>
+              {this.props.isAzureLoginEnabled ?  <DefaultButton
+ 									iconProps={addIcon}
+ 									onClick={getAzureLoginUrl}
+ 									text={"Login with azure"}
+ 								>
+ 									
+	 								</DefaultButton> : null }
             </div>
           </div>
           {/* <div className="term-of-use">

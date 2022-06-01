@@ -1,3 +1,15 @@
+  /**
+   *  AddClauseTab.js
+   *  Author:
+   *  Created:
+   */
+  
+  /**
+   * Change-Log:
+   * - 2022-05-31, Wang, Add username and favourite checkbox
+   */
+
+
 import React, { Component } from 'react';
 import {
   Dropdown, ResponsiveMode,
@@ -24,17 +36,6 @@ class AddClauseTab extends Component {
 
 	teachingBubbleCode = 'add-clause';
 
-	state = {
-	  clause: {
-	    // eslint-disable-next-line react/destructuring-assignment
-	    clause_text: this.props.initialClauseText,
-	  },
-	  showAddSuccess: false,
-	  showAddSuccessCloseTimer: 0,
-	  showAddSuccessClauseID: null,
-	  isSaving: false,
-	};
-
 	mounted = false;
 
 	ids = {
@@ -52,6 +53,23 @@ class AddClauseTab extends Component {
 	  sector_id: getId(),
 	  other_tags_id: getId(),
 	};
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      clause: {
+        // eslint-disable-next-line react/destructuring-assignment
+        clause_text: this.props.initialClauseText,
+        author_id: [this.props.usersname],
+        is_favorite: true,
+      },
+      authorsOptions: [...this.props.authorsOptions, this.props.usersname],
+      showAddSuccess: false,
+      showAddSuccessCloseTimer: 0,
+      showAddSuccessClauseID: null,
+      isSaving: false,
+    };
+  }
 
 	componentDidMount() {
 	  this.mounted = true;
@@ -86,19 +104,28 @@ class AddClauseTab extends Component {
 	}
 
 	saveClause = async () => {
-	  const { saveClause } = this.props;
+	  const { saveClause, setFavorite } = this.props;
 	  const { clause } = this.state;
 	  this.setState({
 	    isSaving: true,
 	  });
 	  const clauseId = await saveClause(clause);
 	  if (clauseId) {
+      // set favourite
+      setFavorite(clauseId, this.state.clause.is_favorite);
+
 	    this.setState({
 	      showAddSuccess: true,
 	      showAddSuccessCloseTimer: 5,
 	      showAddSuccessClauseID: clauseId,
-	      clause: {},
 	      isSaving: false,
+        clause: {
+          // eslint-disable-next-line react/destructuring-assignment
+          clause_text: this.props.initialClauseText,
+          author_id: [this.props.usersname],
+          is_favorite: true,
+        },
+        authorsOptions: [...this.props.authorsOptions, this.props.usersname],
 	    });
 
 	    setTimeout(this.closeTimer, 1000);
@@ -274,7 +301,7 @@ class AddClauseTab extends Component {
               id={this.ids.author_id}
               label="Author"
               value={clause.author_id}
-              options={authorsOptions}
+              options={this.state.authorsOptions}
               onChange={(authorId) => this.setState({ clause: { ...clause, author_id: authorId } })}
               inputProps={{
                 placeholder: clause.author_id?.length ? '' : 'Enter the name of the author',
@@ -330,6 +357,18 @@ class AddClauseTab extends Component {
               }}
             />
           </StackItem>
+          {(isAdmin || isSystemAdmin) && (
+            <StackItem className="endorsed-checkbox">
+              <Checkbox
+                id="is_favorite"
+                label="Add to my favourite clauses"
+                styles={{ text: { fontSize: 12, color: 'inherit' }, checkbox: { height: 15, width: 15 } }}
+                checked={this.state.clause.is_favorite}
+                onChange={(e, isChecked) => this.setState({ clause: { ...clause, is_favorite: isChecked } })}
+              />
+            </StackItem>
+          )}
+
           {(isAdmin || isSystemAdmin) && (
             <StackItem className="endorsed-checkbox">
               <Checkbox

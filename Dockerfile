@@ -1,4 +1,8 @@
-FROM node:12-alpine as builder
+FROM node:16.13.2-bullseye-slim as builder
+RUN apt-get update || : && apt-get install -y \
+    python3 \
+    build-essential
+
 RUN mkdir -p /tmp/app
 RUN chmod -R 777 /tmp/app
 WORKDIR /tmp/app

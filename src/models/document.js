@@ -5,7 +5,7 @@ import {
   getDocumentFile,
   searchDocuments,
 } from '../dataCalls/documents';
-import { formatDate } from '../shared/date';
+import { formatDatePlain } from '../shared/date';
 import { addTransportAppContext } from '../dataCalls/transport';
 import { addMultiIDFilterOption } from '../utils';
 
@@ -198,19 +198,19 @@ export function convertDocumentFilterToCriteriaOptions(tagsIndexed, filterData) 
   if (filter.doc_date_from && filter.doc_date_to) {
     result.push({
       value: 'doc_date_from,doc_date_to',
-      label: `Created between: ${formatDate(filter.doc_date_from)} and ${formatDate(filter.doc_date_to)}`,
+      label: `Created between: ${formatDatePlain(filter.doc_date_from)} and ${formatDatePlain(filter.doc_date_to)}`,
     });
   } else {
     if (filter.doc_date_from) {
       result.push({
         value: 'doc_date_from',
-        label: `Created from: ${formatDate(filter.doc_date_from)}`,
+        label: `Created from: ${formatDatePlain(filter.doc_date_from)}`,
       });
     }
     if (filter.doc_date_to) {
       result.push({
         value: 'doc_date_to',
-        label: `Created until: ${formatDate(filter.doc_date_to)}`,
+        label: `Created until: ${formatDatePlain(filter.doc_date_to)}`,
       });
     }
   }
@@ -218,19 +218,19 @@ export function convertDocumentFilterToCriteriaOptions(tagsIndexed, filterData) 
   if (filter.date_last_modified_from && filter.date_last_modified_to) {
     result.push({
       value: 'date_last_modified_from,date_last_modified_to',
-      label: `Modified between: ${formatDate(filter.date_last_modified_from)} and ${formatDate(filter.date_last_modified_to)}`,
+      label: `Modified between: ${formatDatePlain(filter.date_last_modified_from)} and ${formatDatePlain(filter.date_last_modified_to)}`,
     });
   } else {
     if (filter.date_last_modified_from) {
       result.push({
         value: 'date_last_modified_from',
-        label: `Modified from: ${formatDate(filter.date_last_modified_from)}`,
+        label: `Modified from: ${formatDatePlain(filter.date_last_modified_from)}`,
       });
     }
     if (filter.date_last_modified_to) {
       result.push({
         value: 'date_last_modified_to',
-        label: `Modified until: ${formatDate(filter.date_last_modified_to)}`,
+        label: `Modified until: ${formatDatePlain(filter.date_last_modified_to)}`,
       });
     }
   }
@@ -331,19 +331,19 @@ export function convertDocumentBrowserFilterToCriteriaOptions(tagsIndexed, filte
   if (filter.doc_date_from && filter.doc_date_to) {
     result.push({
       value: 'doc_date_from,doc_date_to',
-      label: `Created between: ${formatDate(filter.doc_date_from)} and ${formatDate(filter.doc_date_to)}`,
+      label: `Created between: ${formatDatePlain(filter.doc_date_from)} and ${formatDatePlain(filter.doc_date_to)}`,
     });
   } else {
     if (filter.doc_date_from) {
       result.push({
         value: 'doc_date_from',
-        label: `Created from: ${formatDate(filter.doc_date_from)}`,
+        label: `Created from: ${formatDatePlain(filter.doc_date_from)}`,
       });
     }
     if (filter.doc_date_to) {
       result.push({
         value: 'doc_date_to',
-        label: `Created until: ${formatDate(filter.doc_date_to)}`,
+        label: `Created until: ${formatDatePlain(filter.doc_date_to)}`,
       });
     }
   }
@@ -351,19 +351,19 @@ export function convertDocumentBrowserFilterToCriteriaOptions(tagsIndexed, filte
   if (filter.date_last_modified_from && filter.date_last_modified_to) {
     result.push({
       value: 'date_last_modified_from,date_last_modified_to',
-      label: `Modified between: ${formatDate(filter.date_last_modified_from)} and ${formatDate(filter.date_last_modified_to)}`,
+      label: `Modified between: ${formatDatePlain(filter.date_last_modified_from)} and ${formatDatePlain(filter.date_last_modified_to)}`,
     });
   } else {
     if (filter.date_last_modified_from) {
       result.push({
         value: 'date_last_modified_from',
-        label: `Modified from: ${formatDate(filter.date_last_modified_from)}`,
+        label: `Modified from: ${formatDatePlain(filter.date_last_modified_from)}`,
       });
     }
     if (filter.date_last_modified_to) {
       result.push({
         value: 'date_last_modified_to',
-        label: `Modified until: ${formatDate(filter.date_last_modified_to)}`,
+        label: `Modified until: ${formatDatePlain(filter.date_last_modified_to)}`,
       });
     }
   }

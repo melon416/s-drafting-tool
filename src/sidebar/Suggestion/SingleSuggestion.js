@@ -1,3 +1,15 @@
+  /**
+   *  SingleSuggestion.js
+   *  Author:
+   *  Created:
+   */
+  
+  /**
+   * Change-Log:
+   * - 2022-05-10, Wang,  Search by every word in suggestion
+   */
+
+
 /* eslint-disable no-underscore-dangle */
 import React, { Component } from 'react';
 import { AnimationStyles } from 'office-ui-fabric-react/lib/Styling';
@@ -42,10 +54,11 @@ export default class SingleSuggestion extends Component {
 	componentDidUpdate() {
 	  const { filter, suggestionSearchExtraText } = this.props;
 	  const { keyword } = filter;
+    const suggestionKeyWords = suggestionSearchExtraText.split(" "); // splitting compounds words into each word
 
     if( document.querySelector('div.PreWrapped.clause-plain-text') ) {
 	    const instance = new Mark('div.PreWrapped.clause-plain-text');
-      instance.mark([suggestionSearchExtraText], {
+      instance.mark([...suggestionKeyWords], {
         accuracy: "exactly",
 	      separateWordSearch: false,
 	      className: 'keyword-bold',

@@ -8,7 +8,7 @@ import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
 import { Slider } from 'office-ui-fabric-react/lib/Slider';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
-import { TeachingBubble } from 'office-ui-fabric-react';
+import { TeachingBubble, MessageBar, MessageBarType} from 'office-ui-fabric-react';
 import _ from 'lodash';
 import { SIDEBAR_TAB_SUGGEST, SIDEBAR_TAB_SUGGESTION_DETAIL } from '../../consts';
 import FilterContainer from './FilterContainer';
@@ -131,9 +131,10 @@ export default class SuggestionResult extends Component {
 	render() {
 	  const {
 	    setSidebarTab, clear, suggestionHasFilter, unusualPhrases, setUnusualPhrases, clauseTypesOptions,
-	    updateUnusualPhrases, currentBubbleCode, visitedTeachingBubbles,
+	    updateUnusualPhrases, currentBubbleCode, visitedTeachingBubbles, showWraningForDisableNLP,
+      suggestionMoreAvailable
 	  } = this.props;
-	  const { showFilter, compareText, compareTextImproveReadability } = this.state;
+	  const { showFilter, compareText, compareTextImproveReadability} = this.state;
 	  return (
       <div className="SuggestionResult" ref={this.teachingBubbleTarget}>
         <LayoutRows>
@@ -179,6 +180,15 @@ export default class SuggestionResult extends Component {
           <LayoutRow>
             <Separator />
           </LayoutRow>
+          {(showWraningForDisableNLP && suggestionMoreAvailable) &&
+          <MessageBar
+              messageBarType={MessageBarType.warning}
+              isMultiline={false}
+              dismissButtonAriaLabel="Close"
+            >
+              No results in top 1,000 NLP matches. Showing results using keywords matches.
+            </MessageBar>
+          }
           {!showFilter && (
           <LayoutRow style={{ margin: 10 }}>
             <div className="ToggleWithCheckbox">

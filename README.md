@@ -4,6 +4,11 @@ This is the drafting tool frontend application
 
 
 
+# Version
+2.22
+
+
+
 ## git branches 
 
 - `staging` : This branch is currently connected to both  `testing` and `staging` clusters

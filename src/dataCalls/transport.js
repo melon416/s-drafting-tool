@@ -1,3 +1,8 @@
+/**
+ * Change-Log:
+ * - 2022-05-29, Attia, added a replace function to replace standalone url properly
+ */
+
 import axios from 'axios';
 import {
   fetchJSON, getQueryString, postJSON, setSendCredentials,
@@ -8,7 +13,7 @@ setSendCredentials(true);
 
 const backendDomain = (window.location.hostname === 'localhost')
   ? (process.env.REACT_APP_SYNTHEIA_BACKEND) ? process.env.REACT_APP_SYNTHEIA_BACKEND : 'http://localhost:3000'
-  : `${window.location.protocol}//${window.location.hostname.replace(/^draft/i, 'api')}`;
+  : `${window.location.protocol}//${window.location.hostname.replace(/^draft/i, 'api').replace(/^standalone/i, 'api-syntheia')}`;
 
 export function fetchData(name, values = {}, area = 'drafting') {
   const response = fetchJSON(`${backendDomain}/${area}/${name}${getQueryString(values)}`);

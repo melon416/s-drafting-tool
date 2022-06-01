@@ -29,6 +29,7 @@ const mapStateToProps = (state) => ({
     currentBubbleCode: state.app.currentBubbleCode,
     visitedTeachingBubbles: state.app.visitedTeachingBubbles,
     bookmarks: state.bookmarks.bookmarks,
+    showWraningForDisableNLP: state.suggestion.showWraningForDisableNLP,
 });
 
 const mapDispatchToProps = (dispatch) => ({

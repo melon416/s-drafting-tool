@@ -1,3 +1,13 @@
+/**
+ *  BrowserResult is a class component for browsing clauses
+ */
+
+/**
+ * Change-Log:
+ * - 6/5/2022, Attia, remove unused tags code
+ */
+
+
 /* eslint-disable camelcase */
 import React, { Component } from 'react';
 import { CommandBar } from 'office-ui-fabric-react/lib/CommandBar';
@@ -7,11 +17,9 @@ import { Slider } from 'office-ui-fabric-react/lib/Slider';
 import { Dropdown, ResponsiveMode } from 'office-ui-fabric-react';
 import _ from 'lodash';
 import { SIDEBAR_TAB_BROWSER_DETAIL, SIDEBAR_TAB_BROWSE } from '../../consts';
-import Select from '../../components/Select';
 import { LayoutRow, LayoutRows } from '../../shared/components/Layout';
 import SingleClause from './SingleClause';
 import Loading from '../../components/Loading';
-import { suggestion } from '../../models';
 
 export default class BrowserResult extends Component {
   teachingBubbleTarget = React.createRef();
@@ -139,8 +147,7 @@ export default class BrowserResult extends Component {
 
   render() {
     const {
-      setSidebarTab, unusualPhrases, setUnusualPhrases, clauseTypesOptions,
-      updateUnusualPhrases
+      setSidebarTab, unusualPhrases, setUnusualPhrases,
     } = this.props;
     const { showFilter } = this.state;
     return (
@@ -194,19 +201,6 @@ export default class BrowserResult extends Component {
             <LayoutRow style={{ margin: 10 }}>
               {unusualPhrases.highlight && unusualPhrases.showAdvanced && (
                 <>
-                  {/* <Select
-                    id="BrowseUnusualPhrasesClauseType"
-                    value={unusualPhrases.clauseTypeID ? [unusualPhrases.clauseTypeID] : null}
-                    options={clauseTypesOptions}
-                    onChange={(clauseTypeID) => {
-                      if (clauseTypeID && clauseTypeID.length) {
-                        updateUnusualPhrases(unusualPhrases.highlight, clauseTypeID.filter((id) => id !== unusualPhrases.clauseTypeID).shift());
-                      } else {
-                        updateUnusualPhrases(unusualPhrases.highlight, null);
-                      }
-                    }}
-                    placeholder="Specify clause types to use as baseline for determining anomaly"
-                  /> */}
                   <Slider
                     min={2}
                     max={25}

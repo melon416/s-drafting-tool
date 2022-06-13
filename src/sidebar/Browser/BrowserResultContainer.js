@@ -1,10 +1,18 @@
+/**
+ *  BrowserResultContainer is a container for Browser Result component
+ */
+
+/**
+ * Change-Log:
+ * - 2022-06-05, Attia, remove unused tags code
+ */
+
+
 /* eslint-disable camelcase */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import BrowserResult from './BrowserResult';
-import { getTagOptionsForType } from '../../models/tag';
-import { TAG_TYPE_CLAUSE_TYPE } from '../../consts';
 
 class BrowserResultContainer extends Component {
   render() {
@@ -24,7 +32,6 @@ const mapStateToProps = (state) => ({
   suggestionSearchText: state.clause.searchText,
   unusualPhrases: state.clause.unusualPhrases,
   suggestionHasFilter: !!Object.keys(_.omitBy(state.clause.filter, _.isEmpty)).length,
-  clauseTypesOptions: getTagOptionsForType(state.tag.tags, TAG_TYPE_CLAUSE_TYPE),
   currentBubbleCode: state.app.currentBubbleCode,
   visitedTeachingBubbles: state.app.visitedTeachingBubbles,
   bookmarks: state.bookmarks.bookmarks,

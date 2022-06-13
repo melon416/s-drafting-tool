@@ -1,3 +1,11 @@
+/**
+ *  TagPicker is wrapper for fluentUI tag Picker
+ */
+
+/**
+ * Change-Log:
+ * - 6/5/2022, Attia, update component when tags change
+ */
 import React, { Component } from 'react';
 import { Label, TagPicker } from 'office-ui-fabric-react';
 import './TagPicker.css';
@@ -9,13 +17,26 @@ const getValue = moize.simple((options, value) => options.find((option) => optio
 export class TagPickerCreatable extends Component {
 	picker = React.createRef();
 
-	shouldComponentUpdate(nextProps) {
-	  const { value, showErrorDetails, error } = this.props;
+    shouldComponentUpdate(nextProps) {
+        const {value, showErrorDetails, error, options} = this.props;
 
-	  return !_.isEqual(value, nextProps.value)
-			|| !_.isEqual(error, nextProps.error)
-			|| !_.isEqual(showErrorDetails, nextProps.showErrorDetails);
-	}
+        return !_.isEqual(value, nextProps.value)
+            || !_.isEqual(error, nextProps.error)
+            || !_.isEqual(showErrorDetails, nextProps.showErrorDetails)
+            || !_.isEqual(options, nextProps.options);
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+        const existingMatches = this.props.options.map((o) => ({name: o.name, key: o.key}))
+        const filterText = this.picker.current.input.current._value
+
+
+        this.picker.current.updateSuggestions(existingMatches.some((a) => a.name.toLowerCase() === filterText.toLowerCase())
+            ? existingMatches
+            : [{key: filterText, name: `Create ${filterText}`, isNewItem: true}].concat(existingMatches))
+
+    }
 
 	onChange = (values) => {
 	  const { onChange } = this.props;

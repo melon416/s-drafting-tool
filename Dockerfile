@@ -1,7 +1,7 @@
-FROM node:16.13.2-bullseye-slim as builder
-RUN apt-get update || : && apt-get install -y \
-    python3 \
-    build-essential
+# Description : Dockerfile of the drafting tool
+# Author : multiple (Zulfat, Andrie Meyer ,Mohamed Maged ,Moataz Farid)
+# ChangeLog : 25/5/2022 , Moataz , update node to 16.15.0-alpine and nginx to 1.21.6-alpine
+FROM node:16.15.0-alpine as builder
 
 RUN mkdir -p /tmp/app
 RUN chmod -R 777 /tmp/app
@@ -12,7 +12,7 @@ COPY --chown=node . .
 RUN yarn run build
 USER node
 
-FROM nginx:1.21.4-alpine
+FROM nginx:1.21.6-alpine
 WORKDIR /var/www/app
 
 RUN rm -f /etc/nginx/conf.d/*

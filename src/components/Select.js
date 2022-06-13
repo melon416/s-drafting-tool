@@ -1,12 +1,11 @@
  /**
-  *  Select.js
-  *  Author:
-  *  Created:
+  *  Select.js is a wrapper component for fluent UI tag picker
   */
  
  /**
   * Change-Log:
   * - 2022-05-11, Wang, Fix breaking on Other Tags
+  * - 2022/06/05, Attia, update component when tags change
   */
 
 
@@ -38,9 +37,17 @@ export const createFilter = (config) => (
 export default class Select extends Component {
 	pickerRef = React.createRef();
 
-	filterOption = createFilter({
-	  stringify: (option) => option.filter || option.name,
-	});
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.options !== this.props.options) {
+            const existingMatches = this.props.options.map((o) => ({name: o.name, key: o.key}))
+            this.pickerRef.current.updateSuggestions(existingMatches);
+        }
+    }
+
+
+    filterOption = createFilter({
+        stringify: (option) => option.filter || option.name,
+    });
 
 	handleChange = (tags) => {
 	  const { onChange } = this.props;

@@ -31,7 +31,7 @@ export default class BrowserSelect extends Component {
             componentRef={this.picker}
             onChange={onChange}
             inputProps={{
-                placeholder: this.props.count > 0 ? '' : '(optional) Filter clauses by name',
+                placeholder: this.props.count > 0 ? '' : '(optional) Filter clauses by keywords',
             }}
             {...rest}
         />;

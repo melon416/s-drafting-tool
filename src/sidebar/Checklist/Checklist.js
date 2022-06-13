@@ -6,7 +6,7 @@
  
  /**
   * Change-Log:
-  * - 2022-05-09, Wang,  Add onShouldVirtualize and compact to GroupedList to show more than 10 items
+  * - 2022-05-09, Wang, Add assign and unassign
   */
 
 /* eslint-disable react/destructuring-assignment */
@@ -23,6 +23,7 @@ import {
 import _ from 'lodash';
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 import {lockChecklist} from '../../dataCalls/checklists';
+import { user } from '../../models';
 
 const colors = [
     {id: 'pink', label: 'pink', color: '#ff789e'},
@@ -42,6 +43,7 @@ export default class Checklist extends Component {
                 fieldName: 'label',
             },
         ],
+        assign: false,
     };
 
     componentDidMount() {
@@ -60,7 +62,7 @@ export default class Checklist extends Component {
 
     render() {
         const {
-            items, readonly, locked, lockedBy,
+            items, readonly, locked, lockedBy, users
         } = this.props;
 
         let groupNames = [];
@@ -167,8 +169,29 @@ export default class Checklist extends Component {
                 });
             };
 
-            const menuProps = {
+            const userProps = {  // this is the props with users
+                items: users && (users.map((user, index) => ({
+                    ['key']: 'edit-item',
+                    ['text']: user.firstname + ' ' + user.lastname,
+                    ['onClick']: () => { // when we assign update the item (assign_id, assigner_app_user_id, assigner_firstname, assigner_lastname)
+                        this.props.onUpdateItem(item.item_uid, {assigner_id: user.id, assigner_app_user_id: user.assigner_app_user_id, assigner_firstname: user.firstname, assigner_lastname: user.lastname});
+                        this.setState({ assign: !this.state.assign});
+                    },
+                    ['iconProps']: {iconName: 'ReminderPerson'}
+                })))
+            }
+
+            let menuProps = {
                 items: [
+                    {   // add a new item Assign
+                        key: 'assign-item',
+                        text: 'Assign',
+                        onClick: (e) => {
+                            this.setState({ assign: !this.state.assign});
+                            e.preventDefault()
+                        },
+                        iconProps: {iconName: 'ReminderPerson'}
+                    },
                     {
                         key: 'edit-item',
                         text: 'Edit',
@@ -204,6 +227,53 @@ export default class Checklist extends Component {
                 directionalHintFixed: true,
             };
 
+            if (item.assigner_id && item.assigner_id !== null) {  // when it is assigned, add unassign
+                menuProps = {
+                    items: [
+                        {
+                            key: 'unassign-item',
+                            text: 'Unassign',
+                            onClick: () => { //when we unassign update fields null
+                                this.props.onUpdateItem(item.item_uid, {assigner_id: null, assigner_app_user_id: null, assigner_firstname: null, assigner_lastname: null});
+                            },
+                            iconProps: {iconName: 'ReminderPerson'}
+                        },
+                        {
+                            key: 'edit-item',
+                            text: 'Edit',
+                            onClick: () => {
+                                this.props.onUpdateItem(item.item_uid, {state: 'edit'});
+                            },
+                            iconProps: {iconName: 'Edit'},
+                        },
+                        {
+                            key: 'delete-item',
+                            text: 'Delete',
+                            onClick: () => {
+                                this.props.onRemoveItem(item.item_uid);
+                            },
+                            iconProps: {iconName: 'Delete'},
+                        },
+                        {
+                            key: 'color',
+                            onRenderContent: () => (
+                                <SwatchColorPicker
+                                    columnCount={6}
+                                    cellShape="circle"
+                                    colorCells={colors}
+                                    onColorChanged={onColorChanged}
+                                    className="color-picker"
+                                />
+                            ),
+                        },
+                    ],
+                    calloutProps: {
+                        calloutMaxWidth: 200,
+                    },
+                    directionalHintFixed: true,
+                };
+            }
+
             const save = (e) => {
                 const {value} = e.target;
                 this.props.onUpdateItem(item.item_uid, {label: value, state: value ? 'normal' : 'edit'});
@@ -219,6 +289,11 @@ export default class Checklist extends Component {
             const onItemChange = (e, value) => {
                 this.props.onUpdateItem(item.item_uid, {label: value});
             };
+
+            const getMentionUserName = (item) => {  // add mention username in the textfield (@firstname + lastname -)
+                if(!item.assigner_id) return '';
+                return '@' + item.assigner_firstname + item.assigner_lastname + ' - ';
+            }
 
             const className = `checklist-item ${item.color_id || ''}`;
             return (
@@ -236,7 +311,7 @@ export default class Checklist extends Component {
                             <div className={className}>
                                 <div className="checklist-item-checkbox">
                                     <Checkbox
-                                        label={item.state === 'edit' ? '' : item.label}
+                                        label={(item.state === 'edit') ? '' : (getMentionUserName(item) + item.label)}
                                         disabled={this.props.readonly}
                                         checked={item.is_checked}
                                         onChange={(ev, checked) => this.props.onItemChecked([item.item_uid], checked)}
@@ -263,7 +338,10 @@ export default class Checklist extends Component {
                                                 iconName: item.state === 'edit' ? 'Edit' : 'More',
                                             }}
                                             disabled={item.state === 'edit'}
-                                            menuProps={menuProps}
+                                            menuProps={!this.state.assign ? menuProps : userProps}
+                                            onAfterMenuDismiss={() => {
+                                                this.setState({assign: false});
+                                            }}
                                         />
                                     </div>
                                 )}

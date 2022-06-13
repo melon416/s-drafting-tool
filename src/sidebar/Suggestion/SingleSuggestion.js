@@ -9,6 +9,11 @@
    * - 2022-05-10, Wang,  Search by every word in suggestion
    */
 
+  /**
+   * Change-Log:
+   * - 2022-05-24, Wang, update the match accurate instance.mark
+   */
+
 
 /* eslint-disable no-underscore-dangle */
 import React, { Component } from 'react';
@@ -74,6 +79,7 @@ export default class SingleSuggestion extends Component {
 	      phrases = keyword.substring(0, notIndex).trim();
 	    }
 	    instance.mark(phrases.split(/ and | or /i), {
+        accuracy: "exactly",
 	      separateWordSearch: true,
 	      className: 'keyword',
 	    });

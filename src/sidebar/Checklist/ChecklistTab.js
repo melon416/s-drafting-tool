@@ -1,3 +1,14 @@
+ /**
+  *  ChecklistTab.js
+  *  Author:
+  *  Created:
+  */
+ 
+ /**
+  * Change-Log:
+  * - 2022-05-09, Wang, Add users and send as props
+  */
+
 /* eslint-disable no-param-reassign */
 /* eslint-disable camelcase */
 import React, {Component} from 'react';
@@ -304,7 +315,7 @@ export default class ChecklistTab extends Component {
         const {
             showLoadChecklist, items, name, loading, saving, checklistFormValid
         } = this.state;
-        const {last_checklist_saved, app_user_id} = this.props;
+        const {last_checklist_saved, app_user_id, users} = this.props;
 
         if (loading) {
             return (
@@ -337,6 +348,7 @@ export default class ChecklistTab extends Component {
                         />
                         <Checklist
                             items={items}
+                            users={users}
                             onGroupDelete={this.onGroupDelete}
                             onAddNewItem={this.onNewItemAdd}
                             onItemChecked={this.onItemChecked}
@@ -392,6 +404,7 @@ export default class ChecklistTab extends Component {
                                 <Label>{guide[0].checklist_name}</Label>
                                 <Checklist
                                     items={guide}
+                                    users={users}
                                     readonly
                                     className="guide-checklist"
                                 />

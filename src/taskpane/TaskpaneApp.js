@@ -1,3 +1,14 @@
+ /**
+  *  TaskpaneApp.js
+  *  Author:
+  *  Created:
+  */
+ 
+ /**
+  * Change-Log:
+  * - 2022-05-20, Wang,  Use Ooxml and solve removed text issue on word addin
+
+
 /* eslint-disable camelcase */
 /* global Office, Word */
 import 'office-ui-fabric-react/dist/css/fabric.min.css';
@@ -56,14 +67,32 @@ export default class TaskpaneApp extends Component {
 	});
 
 	getSelectedText = async () => new Promise((resolve) => {
-	    Office.context.document.getSelectedDataAsync(Office.CoercionType.Text, (asyncResult) => {
+	    Office.context.document.getSelectedDataAsync(Office.CoercionType.Ooxml, (asyncResult) => {
 	      if (asyncResult.status !== Office.AsyncResultStatus.Failed) {
-	        resolve(asyncResult.value);
+			const textResult = this.getResultFromXML(asyncResult.value);
+			resolve(textResult);
 	      } else {
 	        resolve('');
 	      }
 	    });
 	  })
+
+	getResultFromXML = (xmlString) => {
+		const parser = new DOMParser();
+		let xmlDoc = parser.parseFromString(xmlString,"text/xml");
+		const wp = xmlDoc.getElementsByTagName('w:p');
+		let result = "";
+		for(let i = 0; i < wp.length; i ++ ) {
+			const wt = wp[i].getElementsByTagName('w:t');
+			for(let j = 0; j < wt.length; j ++) {
+				result += wt[j].textContent;
+			}
+			if(i !== wp.length -1)
+				result += '\n';
+		}
+
+		return result;
+	}
 
 	arrayBufferToBase64 = (bytes) => {
 	  let binary = '';

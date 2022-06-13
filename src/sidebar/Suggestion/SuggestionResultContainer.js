@@ -1,10 +1,20 @@
+  /**
+   *  SuggestionResultContainer.js
+   *  Author:
+   *  Created:
+   */
+  
+  /**
+   * Change-Log:
+   * - 2022-05-24, Wang,  Add fetchBookmarks
+   * - 2022-06-05, Attia, remove unused tags code
+   */
+
 /* eslint-disable camelcase */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import SuggestionResult from './SuggestionResult';
-import { getTagOptionsForType } from '../../models/tag';
-import { TAG_TYPE_CLAUSE_TYPE } from '../../consts';
 
 class SuggestionResultContainer extends Component {
   render() {
@@ -25,7 +35,6 @@ const mapStateToProps = (state) => ({
     suggestionSearchExtraText: state.suggestion.searchExtraText,
     unusualPhrases: state.suggestion.unusualPhrases,
     suggestionHasFilter: !!Object.keys(_.omitBy(state.suggestion.filter, _.isEmpty)).length,
-    clauseTypesOptions: getTagOptionsForType(state.tag.tags, TAG_TYPE_CLAUSE_TYPE),
     currentBubbleCode: state.app.currentBubbleCode,
     visitedTeachingBubbles: state.app.visitedTeachingBubbles,
     bookmarks: state.bookmarks.bookmarks,
@@ -45,6 +54,7 @@ const mapDispatchToProps = (dispatch) => ({
   showPrevTeachingBubble: () => dispatch.app.showPrevTeachingBubble(),
   addBubbleCodeToVisited: (bubbleCode) => dispatch.app.addBubbleCodeToVisited(bubbleCode),
   setSelectedSuggestion: (suggestion) => dispatch.suggestion.setSelectedSuggestion({ suggestion }),
+  fetchBookmarks: () => dispatch.bookmarks.fetchUserBookmarks(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SuggestionResultContainer);

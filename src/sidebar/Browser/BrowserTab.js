@@ -1,3 +1,15 @@
+ /**
+  *  BrowserTab.js
+  *  Author:
+  *  Created:
+  */
+ 
+ /**
+  * Change-Log:
+  * - 2022-05-23, Wang,  Get only clauses from Bookmarked result
+  */
+
+
 import React from 'react';
 import moize from 'moize';
 import _ from 'lodash';
@@ -86,9 +98,9 @@ export default class BrowserTab extends React.PureComponent {
 
       const bookmarked_clauses = []
       for (let i = 0; i < this.props.bookmarks.length; i++) {
-        bookmarked_clauses.push(this.props.bookmarks[i].clause)
+        if (this.props.bookmarks[i].bookmark_type.includes("Bookmark.Clause")) // only clauses
+          bookmarked_clauses.push(this.props.bookmarks[i].clause)
       }
-
       result = [...bookmarked_clauses]
     }
 
@@ -122,7 +134,7 @@ export default class BrowserTab extends React.PureComponent {
           included = true;
       })
       return included;
-    })
+    });
 
     // Remove Duplicates   
     const resultDump = {};

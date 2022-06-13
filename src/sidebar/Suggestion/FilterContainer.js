@@ -1,51 +1,57 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+/**
+ *  FilterContainer is a wrapper for Filter component
+ */
+
+/**
+ * Change-Log:
+ * - 6/5/2022, Attia, update component to fetch tags by type
+ * - 6/12/2022, Attia, move reset tags to suggestionTabContainer
+ */
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import Filter from './Filter';
-import { getOptionsWithNegations, getTagOptionsForType, getTagsForType } from '../../models/tag';
+import {getTagsForType} from '../../models/tag';
 import {
-  TAG_TYPE_AUTHOR,
-  TAG_TYPE_CLAUSE_TYPE, TAG_TYPE_CLIENT, TAG_TYPE_DOCUMENT_TYPE,
-  TAG_TYPE_JURISDICTION,
-  TAG_TYPE_PARTY,
-  TAG_TYPE_PRACTICE_GROUP,
-  TAG_TYPE_SECTOR,
-  TAG_TYPE_OTHER,
-  TAG_TYPE_MATTER_NUMBER,
+    TAG_TYPE_JURISDICTION,
+    TAG_TYPE_PRACTICE_GROUP,
+    TAG_TYPE_SECTOR,
 } from '../../consts';
 
 class FilterContainer extends Component {
-  render() {
-    return (
-      <Filter {...this.props} />
-    );
-  }
+
+    render() {
+        return (
+            <Filter {...this.props} />
+        );
+    }
 }
 
 const mapStateToProps = (state) => ({
-  initialFilter: state.suggestion.filter,
-  practiceGroupTags: getTagsForType(state.tag.tags, TAG_TYPE_PRACTICE_GROUP),
-  jurisdictionTags: getTagsForType(state.tag.tags, TAG_TYPE_JURISDICTION),
-  sectorTags: getTagsForType(state.tag.tags, TAG_TYPE_SECTOR),
-  practiceGroupsOptions: getOptionsWithNegations(getTagOptionsForType(state.tag.tags, TAG_TYPE_PRACTICE_GROUP)),
-  jurisdictionOptions: getOptionsWithNegations(getTagOptionsForType(state.tag.tags, TAG_TYPE_JURISDICTION)),
-  sectorOptions: getOptionsWithNegations(getTagOptionsForType(state.tag.tags, TAG_TYPE_SECTOR)),
-  partiesOptions: getOptionsWithNegations(getTagOptionsForType(state.tag.tags, TAG_TYPE_PARTY)),
-  clauseTypesOptions: getOptionsWithNegations(getTagOptionsForType(state.tag.tags, TAG_TYPE_CLAUSE_TYPE)),
-  documentTypesOptions: getOptionsWithNegations(getTagOptionsForType(state.tag.tags, TAG_TYPE_DOCUMENT_TYPE)),
-  clientsOptions: getOptionsWithNegations(getTagOptionsForType(state.tag.tags, TAG_TYPE_CLIENT)),
-  matterNumbersOptions: getOptionsWithNegations(getTagOptionsForType(state.tag.tags, TAG_TYPE_MATTER_NUMBER)),
-  authorsOptions: getOptionsWithNegations(getTagOptionsForType(state.tag.tags, TAG_TYPE_AUTHOR)),
-  otherOptions: getTagOptionsForType(state.tag.tags, TAG_TYPE_OTHER),
-  currentBubbleCode: state.app.currentBubbleCode,
-  visitedTeachingBubbles: state.app.visitedTeachingBubbles,
+    initialFilter: state.suggestion.filter,
+    practiceGroupTags: getTagsForType(state.tag.tags, TAG_TYPE_PRACTICE_GROUP),
+    jurisdictionTags: getTagsForType(state.tag.tags, TAG_TYPE_JURISDICTION),
+    sectorTags: getTagsForType(state.tag.tags, TAG_TYPE_SECTOR),
+    practiceGroupsOptions: state.tag.practiceGroupsOptions,
+    jurisdictionOptions: state.tag.jurisdictionOptions,
+    sectorOptions: state.tag.sectorOptions,
+    partiesOptions: state.tag.partiesOptions,
+    clauseTypesOptions: state.tag.clauseTypesOptions,
+    documentTypesOptions: state.tag.documentTypesOptions,
+    clientsOptions: state.tag.clientsOptions,
+    matterNumbersOptions: state.tag.matterNumbersOptions,
+    authorsOptions: state.tag.authorsOptions,
+    otherOptions: state.tag.otherOptions,
+    currentBubbleCode: state.app.currentBubbleCode,
+    visitedTeachingBubbles: state.app.visitedTeachingBubbles,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setSuggestionFilter: (filter) => dispatch.suggestion.setSuggestionFilter({ filter }),
-  searchFilter: () => dispatch.suggestion.searchFilter({}),
-  showNextTeachingBubble: () => dispatch.app.showNextTeachingBubble(),
-  addBubbleCodeToVisited: (bubbleCode) => dispatch.app.addBubbleCodeToVisited(bubbleCode),
-  setSidebarTab: (sidebarTab) => dispatch.app.setSidebarTab({ sidebarTab }),
+    setSuggestionFilter: (filter) => dispatch.suggestion.setSuggestionFilter({filter}),
+    searchFilter: () => dispatch.suggestion.searchFilter({}),
+    showNextTeachingBubble: () => dispatch.app.showNextTeachingBubble(),
+    addBubbleCodeToVisited: (bubbleCode) => dispatch.app.addBubbleCodeToVisited(bubbleCode),
+    setSidebarTab: (sidebarTab) => dispatch.app.setSidebarTab({sidebarTab}),
+    getTagsWithType: (tagType, input) => dispatch.tag.getTagsWithType({tagType, input, withNegations: true}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterContainer);

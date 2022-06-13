@@ -1,3 +1,15 @@
+  /**
+   *  SingleClause.js
+   *  Author:
+   *  Created:
+   */
+  
+  /**
+   * Change-Log:
+   * - 2022-06-08, Wang, No document specified
+   */
+
+
 /* eslint-disable no-underscore-dangle */
 import React, { Component } from 'react';
 import { AnimationStyles } from 'office-ui-fabric-react/lib/Styling';
@@ -223,7 +235,10 @@ export default class SingleClause extends Component {
           {suggestion.documents && (suggestion.documents.length > 1 ? (
             `Found in ${suggestion.documents.length} documents`
           ) : (
-            `Found in ${suggestion.documents[0].doc_title}`
+            !suggestion.documents[0].doc_title ? (
+              `No source document specified`
+            ) :
+            (`Found in ${suggestion.documents[0].doc_title}`)
           ))}
 
         </LayoutRow>

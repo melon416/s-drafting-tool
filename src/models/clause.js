@@ -1,3 +1,15 @@
+  /**
+   *  clause.js
+   *  Author:
+   *  Created:
+   */
+
+  /**
+   * Change-Log:
+   * - 2022-06-01, Wang, Add setFavorite
+   */
+
+
 import { saveClause, searchClauses, setClauseFavorite } from '../dataCalls/clause';
 import { getNextClauseSibling, getTrigramCounts, saveComment } from '../dataCalls/suggestions';
 import { addTransportAppContext } from '../dataCalls/transport';
@@ -118,13 +130,6 @@ export const clause = {
       };
     },
 
-    setIsLoading(state, { isLoading }) {
-      return {
-        ...state,
-        isLoading,
-      };
-    },
-
     clearSuggestionStatus(state) {
       return {
         ...state,
@@ -212,14 +217,10 @@ export const clause = {
     },
 
     async setFavorite({clause_id, is_favorite}, rootState) {
-      dispatch.clause.update({clause_id, clause: {is_favorite}});
-
       const {clause, activities} = await setClauseFavorite(addTransportAppContext(rootState, {
           clause_id,
           is_favorite
       }));
-
-      dispatch.clause.update({clause_id, clause});
     },
 
     async searchClauses({ filter }, rootState) {
@@ -308,7 +309,7 @@ export const clause = {
       this.setComments({ comments });
       this.setCommentIsLoading({ isCommentLoading: false });
     },
-    
+
   }),
 
 };

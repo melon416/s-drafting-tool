@@ -1,3 +1,16 @@
+  /**
+   *  SuggestionResult.js
+   *  Author:
+   *  Created:
+   */
+  
+  /**
+   * Change-Log:
+   * - 2022-05-24, Wang,  fetchBookmarks
+   * - 2022-06-05, Attia, remove unused tags code
+   */
+
+
 /* eslint-disable camelcase */
 import React, { Component } from 'react';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
@@ -12,7 +25,6 @@ import { TeachingBubble, MessageBar, MessageBarType} from 'office-ui-fabric-reac
 import _ from 'lodash';
 import { SIDEBAR_TAB_SUGGEST, SIDEBAR_TAB_SUGGESTION_DETAIL } from '../../consts';
 import FilterContainer from './FilterContainer';
-import Select from '../../components/Select';
 import pickImg from '../../assets/images/tutorial-pick-and-choose.gif';
 import { LayoutRow, LayoutRows } from '../../shared/components/Layout';
 import SingleSuggestion from './SingleSuggestion';
@@ -32,6 +44,7 @@ export default class SuggestionResult extends Component {
 
 	componentDidMount() {
 	  this.forceUpdate();
+    this.props.fetchBookmarks();
 	}
 
 	onCoachDismiss = () => {
@@ -130,7 +143,7 @@ export default class SuggestionResult extends Component {
 
 	render() {
 	  const {
-	    setSidebarTab, clear, suggestionHasFilter, unusualPhrases, setUnusualPhrases, clauseTypesOptions,
+	    setSidebarTab, clear, suggestionHasFilter, unusualPhrases, setUnusualPhrases,
 	    updateUnusualPhrases, currentBubbleCode, visitedTeachingBubbles, showWraningForDisableNLP,
       suggestionMoreAvailable
 	  } = this.props;
@@ -247,19 +260,6 @@ export default class SuggestionResult extends Component {
             </div>
             {unusualPhrases.highlight && unusualPhrases.showAdvanced && (
             <>
-              {/* <Select
-                id="UnusualPhrasesClauseType"
-                value={unusualPhrases.clauseTypeID ? [unusualPhrases.clauseTypeID] : null}
-                options={clauseTypesOptions}
-                onChange={(clauseTypeID) => {
-                  if (clauseTypeID && clauseTypeID.length) {
-                    updateUnusualPhrases(unusualPhrases.highlight, clauseTypeID.filter((id) => id !== unusualPhrases.clauseTypeID).shift());
-                  } else {
-                    updateUnusualPhrases(unusualPhrases.highlight, null);
-                  }
-                }}
-                placeholder="Specify clause types to use as baseline for determining anomaly"
-              /> */}
               <Slider
                 min={2}
                 max={25}

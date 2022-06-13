@@ -1,39 +1,103 @@
+/**
+ *  tag is a rematch model for tags
+ */
+
+/**
+ * Change-Log:
+ * - 6/5/2022, Attia, update requestTags to fetch tags by type
+ */
+
 /* eslint-disable camelcase */
 import moize from 'moize';
 import _ from 'lodash';
-import { fetchTags } from '../dataCalls/tags';
-import { addTransportAppContext } from '../dataCalls/transport';
+import {fetchTags} from '../dataCalls/tags';
+import {addTransportAppContext} from '../dataCalls/transport';
+import {
+    TAG_TYPE_AUTHOR,
+    TAG_TYPE_CLAUSE_TYPE, TAG_TYPE_CLIENT, TAG_TYPE_DOCUMENT_TYPE,
+    TAG_TYPE_JURISDICTION, TAG_TYPE_MATTER_NUMBER, TAG_TYPE_OTHER,
+    TAG_TYPE_PARTY,
+    TAG_TYPE_PRACTICE_GROUP,
+    TAG_TYPE_SECTOR
+} from "../consts";
 
 export const tag = {
-  state: {
-    tags: [],
-  },
-
-  reducers: {
-    setTags(state, { tags }) {
-      return {
-        ...state,
-        tags,
-      };
+    state: {
+        tags: [],
+        tagsLoaded: true,
+        practiceGroupsOptions: [],
+        jurisdictionOptions: [],
+        sectorOptions: [],
+        partiesOptions: [],
+        clauseTypesOptions: [],
+        documentTypesOptions: [],
+        clientsOptions: [],
+        matterNumbersOptions: [],
+        authorsOptions: [],
+        otherOptions: [],
+        suiteOptions: [],
     },
 
-  },
+    reducers: {
+        setTags(state, {tags}) {
+            return {
+                ...state,
+                tags,
+            };
+        },
+        resetTags(state) {
+            return {
+                ...state,
+                tags: [],
+                practiceGroupsOptions: [],
+                jurisdictionOptions: [],
+                sectorOptions: [],
+                partiesOptions: [],
+                clauseTypesOptions: [],
+                documentTypesOptions: [],
+                clientsOptions: [],
+                matterNumbersOptions: [],
+                authorsOptions: [],
+                otherOptions: [],
+                suiteOptions: [],
+            }
+        },
+        setTagTypeOptions(state, {tagTypeOptions, tagType}) {
+            let keyMap = {
+                [TAG_TYPE_PRACTICE_GROUP]: 'practiceGroupsOptions',
+                [TAG_TYPE_JURISDICTION]: 'jurisdictionOptions',
+                [TAG_TYPE_SECTOR]: 'sectorOptions',
+                [TAG_TYPE_PARTY]: 'partiesOptions',
+                [TAG_TYPE_CLAUSE_TYPE]: 'clauseTypesOptions',
+                [TAG_TYPE_DOCUMENT_TYPE]: 'documentTypesOptions',
+                [TAG_TYPE_CLIENT]: 'clientsOptions',
+                [TAG_TYPE_MATTER_NUMBER]: 'matterNumbersOptions',
+                [TAG_TYPE_AUTHOR]: 'authorsOptions',
+                [TAG_TYPE_OTHER]: 'otherOptions',
+            }
 
-  effects: (dispatch) => ({
-    async requestTags(payload, rootState) {
-      if (rootState.tag.tags.length) {
-        return;
-      }
+            let key = keyMap[tagType];
 
-      try {
-        const { tags } = await fetchTags(addTransportAppContext(rootState));
+            return {
+                ...state,
+                [key]: tagTypeOptions,
+            }
+        },
 
-        this.setTags({ tags });
-      } catch (error) {
-        dispatch.app.setError({ error });
-      }
     },
-  }),
+
+    effects: (dispatch) => ({
+        async getTagsWithType({tagType, withNegations, input}, rootState) {
+
+            let {tags} = await fetchTags(addTransportAppContext(rootState, {
+                tag_type: tagType,
+                similar_tag_name: input,
+            }));
+            let tagTypeOptions = withNegations ? getOptionsWithNegations(getTagOptionsForType(tags, tagType)) : getTagOptionsForType(tags, tagType);
+            this.setTags({tags});
+            this.setTagTypeOptions({tagTypeOptions: tagTypeOptions, tagType: tagType});
+        }
+    }),
 
 };
 

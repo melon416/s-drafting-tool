@@ -1,12 +1,11 @@
  /**
-  *  Filter.js
-  *  Author:
-  *  Created:
+  *  Filter.js is a class based components responsible for filtering clause suggestions
   */
  
  /**
   * Change-Log:
   * - 2022-05-11, Wang, Fix breaking on Other Tags (some values were undefined and this was the cause)
+  * - 2022-06-05, Attia, Fetch tags by type on user input
   */
 
 
@@ -26,8 +25,14 @@ import { formatDatePlain, toDate } from '../../shared/date';
 import Select from '../../components/Select';
 import DocumentIdPicker from '../../components/DocumentIdPicker';
 import filterImg from '../../assets/images/tutorial-filters.gif';
-import { SIDEBAR_TAB_ADD_CLAUSE } from '../../consts';
-import { getExpandedTagIds } from '../../models/tag';
+import {
+    SIDEBAR_TAB_ADD_CLAUSE,
+    TAG_TYPE_AUTHOR, TAG_TYPE_CLAUSE_TYPE,
+    TAG_TYPE_CLIENT,
+    TAG_TYPE_DOCUMENT_TYPE, TAG_TYPE_JURISDICTION, TAG_TYPE_OTHER,
+    TAG_TYPE_PARTY, TAG_TYPE_PRACTICE_GROUP, TAG_TYPE_SECTOR
+} from '../../consts';
+import {getExpandedTagIds} from '../../models/tag';
 
 export default class Filter extends Component {
 	teachingBubbleTarget = React.createRef();
@@ -173,17 +178,42 @@ export default class Filter extends Component {
     this.setState({ [`${options}`]: newOptions.filter(n => n), filter: { ...filter, [`${key}`]: value } })
   }
 
-	render() {
-	  const {
-	    currentBubbleCode, visitedTeachingBubbles, onDone,
-	  } = this.props;
-    
-	  const {
-      filter,
-      partiesOptions, clauseTypesOptions, documentTypesOptions, clientsOptions,
-      authorsOptions, practiceGroupsOptions, jurisdictionOptions, sectorOptions,
-      otherOptions,
-    } = this.state;
+    handleFetchTags = (tagType, input) => {
+        /**
+         *
+         * @param {string} tagType
+         * @param {string} input
+         * @return {void}
+         * @memberof Filter
+         */
+        const {getTagsWithType} = this.props;
+        //Don't fetch tags unless there is an input value
+        if (input) {
+            getTagsWithType(tagType, input);
+        }
+    }
+
+    debouncedFetch = _.debounce(this.handleFetchTags, 1000);
+
+    render() {
+        const {
+            currentBubbleCode,
+            visitedTeachingBubbles,
+            onDone,
+            partiesOptions,
+            clauseTypesOptions,
+            documentTypesOptions,
+            clientsOptions,
+            authorsOptions,
+            practiceGroupsOptions,
+            jurisdictionOptions,
+            sectorOptions,
+            otherOptions
+        } = this.props;
+
+        const {
+            filter,
+        } = this.state;
 
         return (
             <div className="SuggestionFilter" ref={this.teachingBubbleTarget}>
@@ -221,7 +251,10 @@ export default class Filter extends Component {
                             options={clauseTypesOptions}
                             onChange={(clause_type_id) => this.onChangeOptions(clause_type_id, 'clause_type_id', 'clauseTypesOptions')}
                             placeholder="Select a clause type as filter"
-                        />
+                            onInputChange={(value) => {
+                                this.debouncedFetch(TAG_TYPE_CLAUSE_TYPE, value);
+                                return value;
+                            }}/>
                     </StackItem>
                     <StackItem>
                         <Label for={this.ids.document_id}>Source Document Name or ID</Label>
@@ -245,7 +278,10 @@ export default class Filter extends Component {
                             options={documentTypesOptions}
                             onChange={(document_type_id) => this.onChangeOptions(document_type_id, 'document_type_id', 'documentTypesOptions')}
                             placeholder="Select a type of source document as filter"
-                        />
+                            onInputChange={(value) => {
+                                this.debouncedFetch(TAG_TYPE_DOCUMENT_TYPE, value);
+                                return value;
+                            }}/>
                     </StackItem>
                     <StackItem>
                         <Label for={this.ids.client_id}>Client</Label>
@@ -265,7 +301,10 @@ export default class Filter extends Component {
                             options={clientsOptions}
                             onChange={(matter_number_id) => this.onChangeOptions(matter_number_id, 'matter_number_id', 'matterNumbersOptions')}
                             placeholder="Select a matter number as filter"
-                        />
+                            onInputChange={(value) => {
+                                this.debouncedFetch(TAG_TYPE_CLIENT, value);
+                                return value;
+                            }}/>
                     </StackItem>
                     <StackItem>
                         <Label for={this.ids.party_id}>Party</Label>
@@ -275,6 +314,10 @@ export default class Filter extends Component {
                             options={partiesOptions}
                             onChange={(party_id) => this.onChangeOptions(party_id, 'party_id', 'partiesOptions')}
                             placeholder="Select a party as filter"
+                            onInputChange={(value) => {
+                                this.debouncedFetch(TAG_TYPE_PARTY, value);
+                                return value;
+                            }}
                         />
                     </StackItem>
                     <StackItem>
@@ -285,7 +328,10 @@ export default class Filter extends Component {
                             options={authorsOptions}
                             onChange={(author_id) => this.onChangeOptions(author_id, 'author_id', 'authorsOptions')}
                             placeholder="Select an author as filter"
-                        />
+                            onInputChange={(value) => {
+                                this.debouncedFetch(TAG_TYPE_AUTHOR, value);
+                                return value;
+                            }}/>
                     </StackItem>
                     <StackItem>
                         <Label for={this.ids.practice_group_id}>Practice Group</Label>
@@ -295,6 +341,10 @@ export default class Filter extends Component {
                             options={practiceGroupsOptions}
                             onChange={(practice_group_id) => this.onChangeOptions(practice_group_id, 'practice_group_id', 'practiceGroupsOptions')}
                             placeholder="Select a practice group as filter"
+                            onInputChange={(value) => {
+                                this.debouncedFetch(TAG_TYPE_PRACTICE_GROUP, value);
+                                return value;
+                            }}
                         />
                     </StackItem>
                     <StackItem>
@@ -305,7 +355,10 @@ export default class Filter extends Component {
                             options={jurisdictionOptions}
                             onChange={(jurisdiction_id) => this.onChangeOptions(jurisdiction_id, 'jurisdiction_id', 'jurisdictionOptions')}
                             placeholder="Select a jurisdiction as filter"
-                        />
+                            onInputChange={(value) => {
+                                this.debouncedFetch(TAG_TYPE_JURISDICTION, value);
+                                return value;
+                            }}/>
                     </StackItem>
                     <StackItem>
                         <Label for={this.ids.sector_id}>Sector</Label>
@@ -315,7 +368,10 @@ export default class Filter extends Component {
                             options={sectorOptions}
                             onChange={(sector_id) => this.onChangeOptions(sector_id, 'sector_id', 'sectorOptions')}
                             placeholder="Any"
-                        />
+                            onInputChange={(value) => {
+                                this.debouncedFetch(TAG_TYPE_SECTOR, value);
+                                return value;
+                            }}/>
                     </StackItem>
                     <StackItem>
                         <Label for={this.ids.other_id}>Other Tags</Label>
@@ -325,7 +381,10 @@ export default class Filter extends Component {
                             options={otherOptions}
                             onChange={(other_tag_id) => this.onChangeOptions(other_tag_id, 'other_tag_id', 'otherOptions')}
                             placeholder="Select additional tags as filters"
-                        />
+                            onInputChange={(value) => {
+                                this.debouncedFetch(TAG_TYPE_OTHER, value);
+                                return value;
+                            }}/>
                     </StackItem>
                     <Stack horizontal tokens={{childrenGap: 20}}>
                         <StackItem grow>

@@ -1,12 +1,17 @@
+/**
+ *  SidebarContainer is a container for Sidebar component
+ */
+
+/**
+ * Change-Log:
+ * - 6/5/2022, Attia, stop fetching all tags on component mount
+ */
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Sidebar from './Sidebar';
 
 class SidebarContainer extends Component {
-  componentDidMount() {
-    const { requestTags } = this.props;
-    requestTags();
-  }
 
   render() {
     return (
@@ -21,7 +26,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setSidebarTab: (sidebarTab) => dispatch.app.setSidebarTab({ sidebarTab }),
-  requestTags: () => dispatch.tag.requestTags(),
   logout: () => dispatch.app.logout(),
 });
 

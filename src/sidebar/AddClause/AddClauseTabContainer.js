@@ -1,65 +1,63 @@
-  /**
-   *  AddClauseTabContainer.js
-   *  Author:
-   *  Created:
-   */
-  
-  /**
-   * Change-Log:
-   * - 2022-05-31, Wang, Add username
-   */
+/**
+ *  AddClauseTabContainer is a container for AddClauseTab component
+ */
 
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+/**
+ * Change-Log:
+ * - 2022-05-31, Wang, Add username
+ * - 2022-06-01, Wang, Add setFavorite
+ * - 6/5/2022, Attia, fetch tags type
+ */
+
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import AddClauseTab from './AddClauseTab';
-import { getTagOptionsForType } from '../../models/tag';
-import {
-  TAG_TYPE_AUTHOR,
-  TAG_TYPE_CLAUSE_TYPE, TAG_TYPE_CLIENT, TAG_TYPE_DOCUMENT_TYPE,
-  TAG_TYPE_JURISDICTION, TAG_TYPE_OTHER,
-  TAG_TYPE_PARTY,
-  TAG_TYPE_PRACTICE_GROUP,
-  TAG_TYPE_SECTOR,
-  TAG_TYPE_MATTER_NUMBER
-} from '../../consts';
+
 
 class AddClauseTabContainer extends Component {
-  render() {
-    return (
-      <AddClauseTab {...this.props} />
-    );
-  }
+    componentDidMount() {
+        this.props.resetTags();
+    }
+
+    render() {
+        return (
+            <AddClauseTab {...this.props} />
+        );
+    }
 }
 
 const mapStateToProps = (state) => ({
-  initialClauseText: state.clause.addClauseText,
-  practiceGroupsOptions: getTagOptionsForType(state.tag.tags, TAG_TYPE_PRACTICE_GROUP),
-  jurisdictionOptions: getTagOptionsForType(state.tag.tags, TAG_TYPE_JURISDICTION),
-  sectorOptions: getTagOptionsForType(state.tag.tags, TAG_TYPE_SECTOR),
-  partiesOptions: getTagOptionsForType(state.tag.tags, TAG_TYPE_PARTY),
-  clauseTypesOptions: getTagOptionsForType(state.tag.tags, TAG_TYPE_CLAUSE_TYPE),
-  documentTypesOptions: getTagOptionsForType(state.tag.tags, TAG_TYPE_DOCUMENT_TYPE),
-  clientsOptions: getTagOptionsForType(state.tag.tags, TAG_TYPE_CLIENT),
-  matterNumberOptions: getTagOptionsForType(state.tag.tags, TAG_TYPE_MATTER_NUMBER),
-  authorsOptions: getTagOptionsForType(state.tag.tags, TAG_TYPE_AUTHOR),
-  otherTagOptions: getTagOptionsForType(state.tag.tags, TAG_TYPE_OTHER),
-  currentBubbleCode: state.app.currentBubbleCode,
-  visitedTeachingBubbles: state.app.visitedTeachingBubbles,
-  workspaces: state.workspace.activeWorkspaces,
-  workspace_id: state.app.appContext.workspace_id,
-  usersname: state.app.appContext.usersname,
+    initialClauseText: state.clause.addClauseText,
+    practiceGroupsOptions: state.tag.practiceGroupsOptions,
+    jurisdictionOptions: state.tag.jurisdictionOptions,
+    sectorOptions: state.tag.sectorOptions,
+    partiesOptions: state.tag.partiesOptions,
+    clauseTypesOptions: state.tag.clauseTypesOptions,
+    documentTypesOptions: state.tag.documentTypesOptions,
+    clientsOptions: state.tag.clientsOptions,
+    matterNumberOptions: state.tag.matterNumberOptions,
+    authorsOptions: state.tag.authorsOptions,
+    otherTagOptions: state.tag.otherTagOptions,
+    currentBubbleCode: state.app.currentBubbleCode,
+    visitedTeachingBubbles: state.app.visitedTeachingBubbles,
+    workspaces: state.workspace.activeWorkspaces,
+    workspace_id: state.app.appContext.workspace_id,
+    usersname: state.app.appContext.usersname,
+
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setSidebarTab: (sidebarTab) => dispatch.app.setSidebarTab({ sidebarTab }),
-  saveClause: (values) => dispatch.clause.saveClause({ values }),
-  setAddClauseText: (text) => dispatch.clause.setAddClauseText({ text }),
-  setFavorite: (clauseId, isFavorite) => dispatch.clause.setClauseFavorite({
-    clause_id: clauseId, is_favorite: isFavorite,
-  }),
-  showNextTeachingBubble: () => dispatch.app.showNextTeachingBubble(),
-  addBubbleCodeToVisited: (bubbleCode) => dispatch.app.addBubbleCodeToVisited(bubbleCode),
-  switchWorkspace: (workspaceId) => dispatch.app.switchWorkspace(workspaceId),
+    setSidebarTab: (sidebarTab) => dispatch.app.setSidebarTab({sidebarTab}),
+    saveClause: (values) => dispatch.clause.saveClause({values}),
+    setAddClauseText: (text) => dispatch.clause.setAddClauseText({text}),
+    showNextTeachingBubble: () => dispatch.app.showNextTeachingBubble(),
+    addBubbleCodeToVisited: (bubbleCode) => dispatch.app.addBubbleCodeToVisited(bubbleCode),
+    switchWorkspace: (workspaceId) => dispatch.app.switchWorkspace(workspaceId),
+    getTagsWithType: (tagType, input) => dispatch.tag.getTagsWithType({tagType, input, withNegations: false}),
+    resetTags: () => dispatch.tag.resetTags(),
+    setFavorite: (clauseId, isFavorite) => dispatch.clause.setFavorite({
+        clause_id: clauseId, is_favorite: isFavorite,
+    }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddClauseTabContainer);

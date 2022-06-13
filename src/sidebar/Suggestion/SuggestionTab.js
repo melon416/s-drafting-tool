@@ -1,3 +1,15 @@
+  /**
+   *  SuggestionTab.js
+   *  Author:
+   *  Created:
+   */
+  
+  /**
+   * Change-Log:
+   * - 2022-06-02, Wang,  Add code for word addin
+   */
+
+
 import React, { Component } from 'react';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import {
@@ -40,6 +52,48 @@ export default class SuggestionTab extends Component {
     switchWorkspace(selectedOption.id);
   };
 
+  handleTextFieldChange = async (event) => {
+    this.props.setSuggestionSearchText(event.target.value);
+  };
+
+  handleDrop = async (event) => { // when text drops and check if it is addin or web
+    if(window.Office) {
+      const selectedText = await this.getSelectedText();
+      this.props.setSuggestionSearchText(selectedText);
+    }
+    else {
+      this.props.setSuggestionSearchText(event.target.value);
+    }
+  }
+
+  getSelectedText = async () => new Promise((resolve) => {
+    window.Office.context.document.getSelectedDataAsync(window.Office.CoercionType.Ooxml, (asyncResult) => {
+      if (asyncResult.status !== window.Office.AsyncResultStatus.Failed) {
+        const textResult = this.getResultFromXML(asyncResult.value);
+        resolve(textResult);
+      } else {
+        resolve('');
+      }
+    });
+  });
+
+  getResultFromXML = (xmlString) => {
+    const parser = new DOMParser();
+    let xmlDoc = parser.parseFromString(xmlString,"text/xml");
+    const wp = xmlDoc.getElementsByTagName('w:p');
+    let result = "";
+    for(let i = 0; i < wp.length; i ++ ) {
+        const wt = wp[i].getElementsByTagName('w:t');
+        for(let j = 0; j < wt.length; j ++) {
+            result += wt[j].textContent;
+        }
+        if(i !== wp.length -1)
+            result += '\n';
+    }
+
+    return result;
+  };
+
   render() {
 	  const {
 	    suggestionSearchText, suggestionSearchExtraText, suggestionIsLoading,
@@ -59,7 +113,8 @@ export default class SuggestionTab extends Component {
             label="Find a suggestion"
             multiline
             value={suggestionSearchText}
-            onChange={(e) => setSuggestionSearchText(e.target.value)}
+            onChange={this.handleTextFieldChange}
+            onDrop={this.handleDrop}
             placeholder="Insert the text of a clause or a plain language description of a clause"
             resizable={false}
             id="syntheiaSuggestMainTextbox"

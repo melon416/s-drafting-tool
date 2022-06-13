@@ -1,3 +1,15 @@
+  /**
+   *  BrowserTab.scss
+   *  Author:
+   *  Created:
+   */
+  
+  /**
+   * Change-Log:
+   * - 2022-06-07, Wang, browse css change
+   */
+
+
 .browser-tab {
     height: 100%;
     display: flex;
@@ -53,7 +65,7 @@
     }
 
     .BrowseTitle {
-      margin: 14px 0;
+      margin: 5px 0;
       color: black;
       font-weight: 600;
       font-size: 14px;

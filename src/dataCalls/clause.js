@@ -1,3 +1,15 @@
+  /**
+   *  clause.js
+   *  Author:
+   *  Created:
+   */
+  
+  /**
+   * Change-Log:
+   * - 2022-06-01, Wang, Add setClauseFavorite
+   */
+
+
 import { postData, fetchClause } from './transport';
 
 export async function saveClause(values) {
@@ -13,6 +25,6 @@ export async function getNextClauseSibling(values) {
 }
 
 export async function setClauseFavorite(values) {
-  return postData('setClauseFavorite', values);
+  return postData('setClauseFavorite', values, 'clause');
 }
 

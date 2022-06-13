@@ -1,14 +1,23 @@
+
+/**
+ * Change-Log:
+ * - 6/12/2022, Attia, reset tags on mount
+ */
 /* eslint-disable camelcase */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SuggestionTab from './SuggestionTab';
 
 class SuggestionTabContainer extends Component {
-  render() {
-    return (
-      <SuggestionTab {...this.props} />
-    );
-  }
+    componentDidMount() {
+        this.props.resetTags();
+    }
+
+    render() {
+        return (
+            <SuggestionTab {...this.props} />
+        );
+    }
 }
 
 const mapStateToProps = (state) => ({
@@ -31,6 +40,7 @@ const mapDispatchToProps = (dispatch) => ({
   showPrevTeachingBubble: () => dispatch.app.showPrevTeachingBubble(),
   addBubbleCodeToVisited: (bubbleCode) => dispatch.app.addBubbleCodeToVisited(bubbleCode),
   switchWorkspace: (workspaceId) => dispatch.app.switchWorkspace(workspaceId),
+  resetTags: () => dispatch.tag.resetTags(),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SuggestionTabContainer);
